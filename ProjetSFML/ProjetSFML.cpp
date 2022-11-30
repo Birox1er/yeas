@@ -1,11 +1,13 @@
 // ProjetSFML.cpp : Ce fichier contient la fonction 'main'. L'exécution du programme commence et se termine à cet endroit.
 //
-#include <SFML/Graphics.hpp>
+#define NOMINMAX 
+#include <windows.h>
 #include <iostream>
+#include "Player.h"
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(800, 600), "ChronoSpacer");
+    sf::RenderWindow window(sf::VideoMode(800, 600), "GEO");
     // Initialise everything below
     // Game loop
     while (window.isOpen()) {
