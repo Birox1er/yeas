@@ -7,19 +7,34 @@
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(800, 600), "GEO");
+    sf::RenderWindow window(sf::VideoMode(1111, 811), "GEO");
     // Initialise everything below
+    Player player;
+    player.triangle = sf::CircleShape (30,3);
+    sf::Clock mainClock;
+    float deltaTime = mainClock.restart().asSeconds();
+
+
     // Game loop
     while (window.isOpen()) {
         sf::Event event;
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
+            printf("Rotate left \n");
+            player.triangle.setRotation(player.triangle.getRotation() - 1);
+        }
         while (window.pollEvent(event)) {
             // Process any input event here
+            
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
         }
         window.clear();
         // Whatever I want to draw goes here
+        player.triangle.setPosition(50, 50);
+        
+        window.draw(player.triangle);
+
         window.display();
     }
 

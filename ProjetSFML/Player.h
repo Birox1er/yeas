@@ -2,8 +2,10 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
-class Player
+
+struct Player
 {
+	sf::CircleShape triangle;
 
 };
 
