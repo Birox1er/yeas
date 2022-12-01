@@ -2,9 +2,8 @@
 //
 #define NOMINMAX 
 #include <windows.h>
-#include <iostream>
 #include <math.h>
-#include "Player.h"
+#include "Game.h"
 
 int main()
 {
@@ -14,20 +13,10 @@ int main()
     sf::Clock mainClock;
     float deltaTime;
    
-    #pragma region InitPLAYER
-    Player player;
-    player.texture.loadFromFile("../Sprites/Player.png");
-    if (!player.texture.loadFromFile("../Sprites/Player.png")) {
-        std::cout << "failed to load Texture" << std::endl;
-        return 0;
-    }
-    player.sprite.setTexture(player.texture);
-    player.sprite.setOrigin(player.texture.getSize().x/2, player.texture.getSize().y / 2);
+    #pragma region Initialisation
+    Game game;
+    InitGame(game, { window.getSize().x * 0.5f,window.getSize().y * 0.5f }, (sf::Vector2f)window.getSize());
     
-    //Set pos to middle screen
-    player.sprite.setPosition(1111 / 2, 811 / 2);
-    //oui elle est grande l'image
-    player.sprite.setScale(.2f, .2f);
     #pragma endregion
 
 
@@ -46,23 +35,23 @@ int main()
         #pragma region Movement
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
             //printf("Rotate Right \n");
-            player.sprite.setRotation(player.sprite.getRotation() - player.rotateSpeed * deltaTime);
+            game.player.sprite.setRotation(game.player.sprite.getRotation() - game.player.rotateSpeed * deltaTime);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
             //printf("Rotate left \n");
-            player.sprite.setRotation(player.sprite.getRotation() + player.rotateSpeed * deltaTime);
+            game.player.sprite.setRotation(game.player.sprite.getRotation() + game.player.rotateSpeed * deltaTime);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
             //printf("Move Forward \n");
-            RecalculateAngles(player);
-            sf::Vector2f pos = player.sprite.getPosition();
-            player.sprite.setPosition(pos.x + player.dir.x * 20 * deltaTime, pos.y + player.dir.y * 20 * deltaTime);
+            RecalculateAngles(game.player);
+            sf::Vector2f pos = game.player.sprite.getPosition();
+            game.player.sprite.setPosition(pos.x + game.player.dir.x * 20 * deltaTime, pos.y + game.player.dir.y * 20 * deltaTime);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
             //printf("Move Backward \n");
-            RecalculateAngles(player);
-            sf::Vector2f pos = player.sprite.getPosition();
-            player.sprite.setPosition(pos.x - player.dir.x * 20 * deltaTime, pos.y - player.dir.y * 20 * deltaTime);
+            RecalculateAngles(game.player);
+            sf::Vector2f pos = game.player.sprite.getPosition();
+            game.player.sprite.setPosition(pos.x - game.player.dir.x * 20 * deltaTime, pos.y - game.player.dir.y * 20 * deltaTime);
         }
         #pragma endregion
 
@@ -76,7 +65,7 @@ int main()
         window.clear();
         // Whatever I want to draw goes here
         
-        window.draw(player.sprite);
+        window.draw(game.player.sprite);
         window.draw(bg);
 
         window.display();

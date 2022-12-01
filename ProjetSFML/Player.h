@@ -18,4 +18,6 @@ struct Player
 	sf::Vector2<float> dir;
 	
 };
+
+void InitPlayer(Player& player, sf::Vector2f position);
 void RecalculateAngles(Player& player);
