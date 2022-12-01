@@ -3,50 +3,66 @@
 #define NOMINMAX 
 #include <windows.h>
 #include <iostream>
-#include "Player.h"
 #include <math.h>
+#include "Player.h"
 
 int main()
 {
-    sf::RenderWindow window(sf::VideoMode(1111, 811), "GEO");
+    sf::RenderWindow window(sf::VideoMode(1000, 800), "GEO");
     // Initialise everything below
-    Player player;
-    player.triangle = sf::CircleShape (30,3);
+    //player.triangle = sf::CircleShape (30,3);
     sf::Clock mainClock;
     float deltaTime;
-        
+   
+    #pragma region InitPLAYER
+    Player player;
+    player.texture.loadFromFile("../Sprites/Player.png");
+    if (!player.texture.loadFromFile("../Sprites/Player.png")) {
+        std::cout << "failed to load Texture" << std::endl;
+        return 0;
+    }
+    player.sprite.setTexture(player.texture);
+    player.sprite.setOrigin(player.texture.getSize().x/2, player.texture.getSize().y / 2);
+    
+    //Set pos to middle screen
+    player.sprite.setPosition(1111 / 2, 811 / 2);
+    //oui elle est grande l'image
+    player.sprite.setScale(.2f, .2f);
+    #pragma endregion
+
+
+    ///FOREGROUND CATHODIC TV
+    sf::Texture bgtext;
+    bgtext.loadFromFile("../Sprites/Effects.png");
+    sf::Sprite bg;
+    bg.setTexture(bgtext);
+
 
     // Game loop
     while (window.isOpen()) {
         sf::Event event;
         deltaTime = mainClock.restart().asSeconds();
 
-        //origin = radius du circle
-        player.triangle.setOrigin(30,30);
-        player.triangle.scale(1, 1);
-
         #pragma region Movement
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
-            printf("Rotate left \n");
-            player.triangle.setRotation(player.triangle.getRotation() - player.rotateSpeed * deltaTime);
-
+            //printf("Rotate Right \n");
+            player.sprite.setRotation(player.sprite.getRotation() - player.rotateSpeed * deltaTime);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-            printf("Rotate left \n");
-            player.triangle.setRotation(player.triangle.getRotation() + player.rotateSpeed * deltaTime);
-
+            //printf("Rotate left \n");
+            player.sprite.setRotation(player.sprite.getRotation() + player.rotateSpeed * deltaTime);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
-            printf("Move Forward \n");
+            //printf("Move Forward \n");
             RecalculateAngles(player);
-            sf::Vector2f pos = player.triangle.getPosition();
-            player.triangle.setPosition(pos.x + player.dir.x * 10 * deltaTime, pos.y + player.dir.y * 10 * deltaTime);
+            sf::Vector2f pos = player.sprite.getPosition();
+            player.sprite.setPosition(pos.x + player.dir.x * 20 * deltaTime, pos.y + player.dir.y * 20 * deltaTime);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
-            printf("Move Backward \n");
+            //printf("Move Backward \n");
             RecalculateAngles(player);
-            sf::Vector2f pos = player.triangle.getPosition();
-            player.triangle.setPosition(pos.x - player.dir.x * 10 * deltaTime, pos.y - player.dir.y * 10 * deltaTime);
+            sf::Vector2f pos = player.sprite.getPosition();
+            player.sprite.setPosition(pos.x - player.dir.x * 20 * deltaTime, pos.y - player.dir.y * 20 * deltaTime);
         }
         #pragma endregion
 
@@ -60,7 +76,8 @@ int main()
         window.clear();
         // Whatever I want to draw goes here
         
-        window.draw(player.triangle);
+        window.draw(player.sprite);
+        window.draw(bg);
 
         window.display();
     }

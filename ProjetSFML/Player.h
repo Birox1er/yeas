@@ -6,8 +6,15 @@
 
 struct Player
 {
-	sf::CircleShape triangle;
+	sf::Sprite sprite;
+	sf::Texture texture;
 	int rotateSpeed = 100;
+	int speed = 20;
+	/*Prepare le terrain pour acceleration et deceleration
+	int baseSpeed
+	int MaxSpeed
+	int friction en µ/Maxspeed
+	*/
 	sf::Vector2<float> dir;
 	
 };
