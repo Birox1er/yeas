@@ -4,7 +4,7 @@
 #include <windows.h>
 #include <iostream>
 #include "Player.h"
-
+#include <math.h>
 
 int main()
 {
@@ -25,7 +25,7 @@ int main()
         player.triangle.setOrigin(30,30);
         player.triangle.scale(1, 1);
 
-        #pragma region Movement /// TAke ANGLES OUT BEFORE MOVEMENT
+        #pragma region Movement
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
             printf("Rotate left \n");
             player.triangle.setRotation(player.triangle.getRotation() - player.rotateSpeed * deltaTime);
@@ -38,24 +38,15 @@ int main()
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
             printf("Move Forward \n");
-            #pragma region RecalculateAngles
-                player.dir.x = 10 * sin(player.triangle.getRotation() * (3.141592653589793 / 180));
-                player.dir.y = 10 * -cos(player.triangle.getRotation() * (3.141592653589793 / 180));
-                //std::cout << player.dir.x << ", " << player.dir.y << std::endl;
-            #pragma endregion
-
+            RecalculateAngles(player);
             sf::Vector2f pos = player.triangle.getPosition();
             player.triangle.setPosition(pos.x + player.dir.x * 10 * deltaTime, pos.y + player.dir.y * 10 * deltaTime);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
             printf("Move Backward \n");
-            #pragma region RecalculateAngles
-                player.dir.x = -10 * sin(player.triangle.getRotation() * (3.141592653589793 / 180));
-                player.dir.y = -10 * -cos(player.triangle.getRotation() * (3.141592653589793 / 180));
-                std::cout << player.dir.x << ", " << player.dir.y << std::endl;
-            #pragma endregion
+            RecalculateAngles(player);
             sf::Vector2f pos = player.triangle.getPosition();
-            player.triangle.setPosition(pos.x + player.dir.x * 10 * deltaTime, pos.y + player.dir.y * 10 * deltaTime);
+            player.triangle.setPosition(pos.x - player.dir.x * 10 * deltaTime, pos.y - player.dir.y * 10 * deltaTime);
         }
         #pragma endregion
 

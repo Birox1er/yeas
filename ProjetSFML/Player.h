@@ -11,3 +11,4 @@ struct Player
 	sf::Vector2<float> dir;
 	
 };
+void RecalculateAngles(Player& player);
