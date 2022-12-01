@@ -5,6 +5,7 @@
 #include <iostream>
 #include "Player.h"
 
+
 int main()
 {
     sf::RenderWindow window(sf::VideoMode(1111, 811), "GEO");
@@ -12,16 +13,54 @@ int main()
     Player player;
     player.triangle = sf::CircleShape (30,3);
     sf::Clock mainClock;
-    float deltaTime = mainClock.restart().asSeconds();
-
+    float deltaTime;
+        
 
     // Game loop
     while (window.isOpen()) {
         sf::Event event;
+        deltaTime = mainClock.restart().asSeconds();
+
+        //origin = radius du circle
+        player.triangle.setOrigin(30,30);
+
+        #pragma region Movement /// TAke ANGLES OUT BEFORE MOVEMENT
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
             printf("Rotate left \n");
-            player.triangle.setRotation(player.triangle.getRotation() - 1);
+            player.triangle.setRotation(player.triangle.getRotation() - player.rotateSpeed * deltaTime);
+
         }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+            printf("Rotate left \n");
+            player.triangle.setRotation(player.triangle.getRotation() + player.rotateSpeed * deltaTime);
+
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
+            printf("Move Forward \n");
+            #pragma region RecalculateAngles
+                player.dir.x = 10 * sin(player.triangle.getRotation() * (3.141592653589793 / 180));
+                player.dir.y = 10 * -cos(player.triangle.getRotation() * (3.141592653589793 / 180));
+                //std::cout << player.dir.x << ", " << player.dir.y << std::endl;
+            #pragma endregion
+
+            sf::Vector2f pos = player.triangle.getPosition();
+            std::cout << pos.x << ", " << pos.y << std::endl;
+            player.triangle.setPosition(1000, 100);
+            std::cout << pos.x << ",2 " << pos.y << std::endl;
+
+            //player.triangle.setPosition(pos.x + player.dir.x * 10 * deltaTime, pos.y + player.dir.y * 10 * deltaTime);
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
+            printf("Move Backward \n");
+            #pragma region RecalculateAngles
+                player.dir.x = -10 * sin(player.triangle.getRotation() * (3.141592653589793 / 180));
+                player.dir.y = -10 * -cos(player.triangle.getRotation() * (3.141592653589793 / 180));
+                std::cout << player.dir.x << ", " << player.dir.y << std::endl;
+            #pragma endregion
+            player.triangle.move(0,-100);
+        }
+        #pragma endregion
+
         while (window.pollEvent(event)) {
             // Process any input event here
             
