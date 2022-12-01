@@ -43,15 +43,55 @@ int main()
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
             //printf("Move Forward \n");
+            game.player.wasS = false;
+            game.player.wasZ = true;
             RecalculateAngles(game.player);
             sf::Vector2f pos = game.player.sprite.getPosition();
-            game.player.sprite.setPosition(pos.x + game.player.dir.x * 20 * deltaTime, pos.y + game.player.dir.y * 20 * deltaTime);
+
+            game.player.speed += game.player.AccSpeed;
+
+            if (game.player.speed > game.player.MaxSpeed) {
+                game.player.speed = game.player.MaxSpeed;
+            }
+            std::cout << game.player.speed << std::endl;
+            game.player.sprite.setPosition(pos.x + game.player.dir.x * game.player.speed * deltaTime, pos.y + game.player.dir.y * game.player.speed * deltaTime);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
             //printf("Move Backward \n");
+            game.player.wasZ = false;
+            game.player.wasS = true;
             RecalculateAngles(game.player);
-            sf::Vector2f pos = game.player.sprite.getPosition();
-            game.player.sprite.setPosition(pos.x - game.player.dir.x * 20 * deltaTime, pos.y - game.player.dir.y * 20 * deltaTime);
+
+            game.player.speed -= game.player.AccSpeed;
+
+            //if (game.player.speed > game.player.MaxSpeed/3) {
+            //    game.player.speed -= game.player.AccSpeed;
+            //}else if (game.player.speed <= game.player.MaxSpeed/3) {
+            //    game.player.speed += game.player.AccSpeed;
+            //}
+
+            if (game.player.speed < 0) {
+                game.player.speed = 0;
+            }
+            std::cout << game.player.speed << std::endl;
+            game.player.sprite.move(game.player.dir.x * /*-*/game.player.speed * deltaTime, game.player.dir.y * /*-*/game.player.speed * deltaTime);
+        }
+        if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Z) && !(sf::Keyboard::isKeyPressed(sf::Keyboard::S))) {
+            if (game.player.speed > 0) {
+                game.player.speed -= game.player.friction;
+                if (game.player.wasZ) {
+                    game.player.sprite.move(game.player.dir.x * game.player.speed * deltaTime, game.player.dir.y * game.player.speed * deltaTime);
+                }
+                else if (game.player.wasS) {
+                    game.player.sprite.move(game.player.dir.x * /*-*/game.player.speed * deltaTime, game.player.dir.y * /*-*/game.player.speed * deltaTime);
+                }
+                std::cout << game.player.speed << std::endl;
+            }
+            else if (game.player.speed < 0) {
+                game.player.speed = 0;
+                std::cout << game.player.speed << std::endl;
+
+            }
         }
         #pragma endregion
 
@@ -65,8 +105,8 @@ int main()
         window.clear();
         // Whatever I want to draw goes here
         
-        window.draw(game.player.sprite);
         window.draw(bg);
+        window.draw(game.player.sprite);
 
         window.display();
     }

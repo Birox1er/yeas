@@ -9,14 +9,13 @@ struct Player
 	sf::Sprite sprite;
 	sf::Texture texture;
 	int rotateSpeed = 100;
-	int speed = 20;
-	/*Prepare le terrain pour acceleration et deceleration
-	int baseSpeed
-	int MaxSpeed
-	int friction en µ/Maxspeed
-	*/
+	float speed = 0;
+	float AccSpeed = .01f;
+	int MaxSpeed = 25;
+	float friction = .001f;
 	sf::Vector2<float> dir;
-	
+	bool wasZ = false;
+	bool wasS = false;
 };
 
 void InitPlayer(Player& player, sf::Vector2f position);
