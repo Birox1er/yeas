@@ -74,7 +74,7 @@ int main()
                 game.player.speed = 0;
             }
             std::cout << game.player.speed << std::endl;
-            game.player.sprite.move(game.player.dir.x * /*-*/game.player.speed * deltaTime, game.player.dir.y * /*-*/game.player.speed * deltaTime);
+            game.player.sprite.move(game.player.dir.x * -game.player.speed * deltaTime *1.5, game.player.dir.y * -game.player.speed * deltaTime * 1.5);
         }
         if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Z) && !(sf::Keyboard::isKeyPressed(sf::Keyboard::S))) {
             if (game.player.speed > 0) {
@@ -83,7 +83,7 @@ int main()
                     game.player.sprite.move(game.player.dir.x * game.player.speed * deltaTime, game.player.dir.y * game.player.speed * deltaTime);
                 }
                 else if (game.player.wasS) {
-                    game.player.sprite.move(game.player.dir.x * /*-*/game.player.speed * deltaTime, game.player.dir.y * /*-*/game.player.speed * deltaTime);
+                    game.player.sprite.move(game.player.dir.x * -game.player.speed * deltaTime, game.player.dir.y * -game.player.speed * deltaTime);
                 }
                 std::cout << game.player.speed << std::endl;
             }
