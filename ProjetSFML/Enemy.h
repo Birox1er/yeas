@@ -1,16 +1,23 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 
+struct Player;
+
 struct Enemy
 {
+	int baseSpeed = 100;
 	int speed;
 	int life;
 	int size;
 	sf::CircleShape enemyShape;
 	sf::Vector2f origine;
-	//sf::Vector2f direction;
 	sf::Vector2f position;
+	sf::Vector2f dir;
+	sf::Sprite sprite;
+	sf::Texture texture;
+
 };
 
-Enemy CreateEnemy(int speed, int life, sf::Vector2f origine, int size);
+Enemy GenerateEnemyAndCreate(int windoSizeX, int windoSizeY, Player& player);
 
+Enemy CreateEnemy(int speed, int life, sf::Vector2f origine, int size, Player& player);
