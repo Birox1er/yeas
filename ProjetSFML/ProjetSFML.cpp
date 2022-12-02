@@ -48,7 +48,7 @@ int main()
             RecalculateAngles(game.player);
             sf::Vector2f pos = game.player.sprite.getPosition();
 
-            game.player.speed += game.player.AccSpeed;
+            game.player.speed += game.player.AccSpeed * deltaTime;
 
             if (game.player.speed > game.player.MaxSpeed) {
                 game.player.speed = game.player.MaxSpeed;
@@ -62,7 +62,7 @@ int main()
             game.player.wasS = true;
             RecalculateAngles(game.player);
 
-            game.player.speed -= game.player.AccSpeed;
+            game.player.speed -= game.player.AccSpeed * deltaTime;
 
             //if (game.player.speed > game.player.MaxSpeed/3) {
             //    game.player.speed -= game.player.AccSpeed;
@@ -78,7 +78,7 @@ int main()
         }
         if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Z) && !(sf::Keyboard::isKeyPressed(sf::Keyboard::S))) {
             if (game.player.speed > 0) {
-                game.player.speed -= game.player.friction;
+                game.player.speed -= game.player.friction * deltaTime;
                 if (game.player.wasZ) {
                     game.player.sprite.move(game.player.dir.x * game.player.speed * deltaTime, game.player.dir.y * game.player.speed * deltaTime);
                 }

@@ -10,9 +10,9 @@ struct Player
 	sf::Texture texture;
 	int rotateSpeed = 100;
 	float speed = 0;
-	float AccSpeed = .01f;
+	float AccSpeed = 10;
 	int MaxSpeed = 25;
-	float friction = .001f;
+	float friction = 10;
 	sf::Vector2<float> dir;
 	bool wasZ = false;
 	bool wasS = false;
