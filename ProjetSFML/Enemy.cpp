@@ -9,7 +9,7 @@ Enemy GenerateEnemyAndCreate(int windoSizeX, int windoSizeY, Player& player)
     sf::Vector2f pos;
     pos.x = rand() % windoSizeX;
     pos.y = rand() % windoSizeY;
-    int baseSpeed = 100;
+    int baseSpeed = 500;
     int speed;
     int life;
     int size;
@@ -36,7 +36,7 @@ Enemy GenerateEnemyAndCreate(int windoSizeX, int windoSizeY, Player& player)
     else if (seed < 95) {
         life = 9;
     }
-    else if (seed <= 100) {
+    else if (seed <= 120) {
         life = 10;
     }
 #pragma endregion
@@ -57,4 +57,13 @@ Enemy CreateEnemy(int speed, int life, sf::Vector2f origine,int size, Player& pl
     Enemy enemy{ 100,speed,life,size,enemyShape,origine,position,direction};
 
     return enemy;
+}
+void UpdateEnemy(Enemy& enemy, float deltaTime) {
+
+    enemy.enemyShape.move(Normalize(enemy.dir) * -deltaTime * (float)enemy.speed);
+}
+sf::Vector2f Normalize(sf::Vector2f vector) {
+    float norme = sqrt(vector.x * vector.x + vector.y * vector.y);
+    
+    return sf::Vector2f(vector.x/norme, vector.y/norme);
 }

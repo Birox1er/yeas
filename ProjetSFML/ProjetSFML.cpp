@@ -8,7 +8,7 @@
 int main()
 {
     std::srand(time(nullptr));
-    sf::RenderWindow window(sf::VideoMode(1000, 800), "GEO");
+    sf::RenderWindow window(sf::VideoMode(1000, 800), "UwU : Ultra Warn Universe");
     // Initialise everything below
     //player.triangle = sf::CircleShape (30,3);
     sf::Clock mainClock;
@@ -17,7 +17,6 @@ int main()
     #pragma region Initialisation
     Game game;
     InitGame(game, { window.getSize().x * 0.5f,window.getSize().y * 0.5f }, (sf::Vector2f)window.getSize());
-    Enemy enemy = GenerateEnemyAndCreate(window.getSize().x, window.getSize().y, game.player);
 
     #pragma endregion
 
@@ -50,9 +49,25 @@ int main()
         window.clear();
         // Whatever I want to draw goes here
         
-        window.draw(bg);
-        window.draw(enemy.enemyShape);
+        //window.draw(bg);
+        window.draw(game.enemy.enemyShape);
+
+
+        window.draw(game.player.hitbox);
         window.draw(game.player.sprite);
+
+        sf::Vector2f tempPos = game.player.sprite.getPosition();
+
+        if (game.player.outwidth && game.player.sprite.getPosition().x > window.getSize().x*.5f) {
+            game.player.sprite.setPosition(tempPos.x - window.getSize().x, tempPos.y);
+            window.draw(game.player.sprite);
+            game.player.sprite.setPosition(tempPos);
+        }
+        if (game.player.outwidth && game.player.sprite.getPosition().x < window.getSize().x * .5f) {
+            game.player.sprite.setPosition(tempPos.x + window.getSize().x, tempPos.y);
+            window.draw(game.player.sprite);
+            game.player.sprite.setPosition(tempPos);
+        }
 
         window.display();
     }

@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <math.h>
 
 struct Player;
 
@@ -19,5 +20,8 @@ struct Enemy
 };
 
 Enemy GenerateEnemyAndCreate(int windoSizeX, int windoSizeY, Player& player);
-
 Enemy CreateEnemy(int speed, int life, sf::Vector2f origine, int size, Player& player);
+
+void UpdateEnemy(Enemy& enemy, float deltaTime);
+
+sf::Vector2f Normalize(sf::Vector2f vector);

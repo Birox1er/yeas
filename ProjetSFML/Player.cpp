@@ -13,6 +13,10 @@ void InitPlayer(Player& player, sf::Vector2f position)
     player.sprite.setPosition(position.x+11/2, position.y+11 / 2);
     //oui elle est grande l'image
     player.sprite.setScale(.2f, .2f);
+
+    player.hitbox.setPosition(player.sprite.getPosition());
+    player.hitbox.setOrigin(33,33);
+
 }
 
 void RecalculateAngles(Player& player)
@@ -83,4 +87,5 @@ void UpdatePlayer(Player& player, float deltaTime)
 
         }
     }
+    player.hitbox.setPosition(player.sprite.getPosition());
 }

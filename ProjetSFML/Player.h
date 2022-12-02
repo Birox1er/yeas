@@ -8,6 +8,7 @@ struct Player
 {
 	sf::Sprite sprite;
 	sf::Texture texture;
+	sf::CircleShape hitbox = sf::CircleShape(33, 10);
 	int rotateSpeed = 100;
 	float speed = 0;
 	float AccSpeed = 10;
@@ -16,6 +17,9 @@ struct Player
 	sf::Vector2<float> dir;
 	bool wasZ = false;
 	bool wasS = false;
+
+	bool outwidth = false;
+	bool outHeight = false;
 };
 
 void InitPlayer(Player& player, sf::Vector2f position);
