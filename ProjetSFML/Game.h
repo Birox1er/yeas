@@ -11,3 +11,4 @@ struct Game
 };
 
 void InitGame(Game& game, sf::Vector2f position, sf::Vector2f size);
+void GameUpdate(Game& game, float deltaTime);

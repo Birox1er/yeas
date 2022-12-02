@@ -9,3 +9,8 @@ void InitGame(Game& game, sf::Vector2f position, sf::Vector2f size)
 	game.shape.setOrigin(size / 2.f);
 	InitPlayer(game.player, position);
 }
+
+void GameUpdate(Game& game, float deltaTime)
+{
+	UpdatePlayer(game.player, deltaTime);
+}
