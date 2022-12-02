@@ -50,25 +50,7 @@ int main()
         // Whatever I want to draw goes here
         
         //window.draw(bg);
-        window.draw(game.enemy.enemyShape);
-
-
-        window.draw(game.player.hitbox);
-        window.draw(game.player.sprite);
-
-        sf::Vector2f tempPos = game.player.sprite.getPosition();
-
-        if (game.player.outwidth && game.player.sprite.getPosition().x > window.getSize().x*.5f) {
-            game.player.sprite.setPosition(tempPos.x - window.getSize().x, tempPos.y);
-            window.draw(game.player.sprite);
-            game.player.sprite.setPosition(tempPos);
-        }
-        if (game.player.outwidth && game.player.sprite.getPosition().x < window.getSize().x * .5f) {
-            game.player.sprite.setPosition(tempPos.x + window.getSize().x, tempPos.y);
-            window.draw(game.player.sprite);
-            game.player.sprite.setPosition(tempPos);
-        }
-
+        GameDraw(game, window);
         window.display();
     }
 

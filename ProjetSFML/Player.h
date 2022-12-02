@@ -25,3 +25,4 @@ struct Player
 void InitPlayer(Player& player, sf::Vector2f position);
 void RecalculateAngles(Player& player);
 void UpdatePlayer(Player& player, float deltaTime);
+void PlayerDraw(Player& player, sf::RenderWindow& window);
