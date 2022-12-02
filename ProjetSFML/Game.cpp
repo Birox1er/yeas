@@ -13,11 +13,17 @@ void InitGame(Game& game, sf::Vector2f position, sf::Vector2f size)
 }
 void CheckOutsides(Game& game, Player& player) {
 
-	if (player.hitbox.getPosition().x + player.hitbox.getRadius() > game.size.x || player.hitbox.getPosition().x - player.hitbox.getRadius() < +100) {
-		player.outwidth = true;
+	if (player.hitbox.getPosition().x + player.hitbox.getRadius() > game.size.x || player.hitbox.getPosition().x - player.hitbox.getRadius() < 0) {
+		player.outWidth = true;
 	}
 	else {
-		player.outwidth = false;
+		player.outWidth = false;
+	}
+	if (player.hitbox.getPosition().y + player.hitbox.getRadius() > game.size.y || player.hitbox.getPosition().y - player.hitbox.getRadius() < 0) {
+		player.outHeight = true;
+	}
+	else {
+		player.outHeight = false;
 	}
 
 }

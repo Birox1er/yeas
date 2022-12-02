@@ -32,12 +32,6 @@ int main()
     while (window.isOpen()) {
         sf::Event event;
         deltaTime = mainClock.restart().asSeconds();
-
-        #pragma region Movement
-        
-        #pragma endregion
-        
-
         while (window.pollEvent(event)) {
             // Process any input event here
             

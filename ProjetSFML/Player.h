@@ -18,7 +18,7 @@ struct Player
 	bool wasZ = false;
 	bool wasS = false;
 
-	bool outwidth = false;
+	bool outWidth = false;
 	bool outHeight = false;
 };
 
