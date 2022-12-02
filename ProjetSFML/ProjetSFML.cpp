@@ -4,9 +4,10 @@
 #include <windows.h>
 #include <math.h>
 #include "Game.h"
-
+#include "Enemy.h"
 int main()
 {
+    std::srand(time(nullptr));
     sf::RenderWindow window(sf::VideoMode(1000, 800), "GEO");
     // Initialise everything below
     //player.triangle = sf::CircleShape (30,3);
@@ -16,7 +17,8 @@ int main()
     #pragma region Initialisation
     Game game;
     InitGame(game, { window.getSize().x * 0.5f,window.getSize().y * 0.5f }, (sf::Vector2f)window.getSize());
-    
+    Enemy enemy = GenerateEnemyAndCreate(window.getSize().x, window.getSize().y, game.player);
+
     #pragma endregion
 
 
@@ -35,6 +37,7 @@ int main()
         #pragma region Movement
         
         #pragma endregion
+        
 
         while (window.pollEvent(event)) {
             // Process any input event here
@@ -48,6 +51,7 @@ int main()
         // Whatever I want to draw goes here
         
         window.draw(bg);
+        window.draw(enemy.enemyShape);
         window.draw(game.player.sprite);
 
         window.display();
