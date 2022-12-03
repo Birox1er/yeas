@@ -47,7 +47,7 @@ void UpdatePlayer(Player& player, float deltaTime)
         if (player.speed > player.MaxSpeed) {
             player.speed = player.MaxSpeed;
         }
-        std::cout << player.speed << std::endl;
+        //std::cout << player.speed << std::endl;
         player.sprite.setPosition(pos.x + player.dir.x * player.speed * deltaTime, pos.y + player.dir.y * player.speed * deltaTime);
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
@@ -67,7 +67,7 @@ void UpdatePlayer(Player& player, float deltaTime)
         if (player.speed < 0) {
             player.speed = 0;
         }
-        std::cout << player.speed << std::endl;
+        //std::cout << player.speed << std::endl;
         player.sprite.move(player.dir.x * -player.speed * deltaTime * 1.5, player.dir.y * -player.speed * deltaTime * 1.5);
     }
     if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Z) && !(sf::Keyboard::isKeyPressed(sf::Keyboard::S))) {
@@ -79,11 +79,11 @@ void UpdatePlayer(Player& player, float deltaTime)
             else if (player.wasS) {
                 player.sprite.move(player.dir.x * -player.speed * deltaTime, player.dir.y * -player.speed * deltaTime);
             }
-            std::cout << player.speed << std::endl;
+            //std::cout << player.speed << std::endl;
         }
         else if (player.speed < 0) {
             player.speed = 0;
-            std::cout << player.speed << std::endl;
+            //std::cout << "Player speed is : " << player.speed << std::endl;
 
         }
     }
