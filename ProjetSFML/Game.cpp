@@ -38,3 +38,8 @@ void GameUpdate(Game& game, float deltaTime)
 	UpdateEnemy(game.enemy, deltaTime);
 	CheckOutsides(game, game.player);
 }
+
+void PressedSpace(Game& game, float deltaTime)
+{
+	PlayerPressedSpace(game.player, deltaTime);
+}

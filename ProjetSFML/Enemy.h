@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <math.h>
+#include "Projectile.h"
 
 struct Player;
 
@@ -24,5 +25,3 @@ Enemy CreateEnemy(int speed, int life, sf::Vector2f origine, int size, Player& p
 
 void UpdateEnemy(Enemy& enemy, float deltaTime);
 void EnemyDraw(Enemy& enemy, sf::RenderWindow& window);
-
-sf::Vector2f Normalize(sf::Vector2f vector);

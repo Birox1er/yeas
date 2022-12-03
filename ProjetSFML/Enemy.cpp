@@ -66,8 +66,3 @@ void EnemyDraw(Enemy& enemy, sf::RenderWindow& window)
 {
     window.draw(enemy.enemyShape);
 }
-sf::Vector2f Normalize(sf::Vector2f vector) {
-    float norme = sqrt(vector.x * vector.x + vector.y * vector.y);
-    
-    return sf::Vector2f(vector.x/norme, vector.y/norme);
-}
