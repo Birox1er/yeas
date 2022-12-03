@@ -13,11 +13,12 @@ void InitPlayer(Player& player, sf::Vector2f position)
     player.sprite.setPosition(position.x+11/2, position.y+11 / 2);
     //oui elle est grande l'image
     player.sprite.setScale(.2f, .2f);
-
+    player.hitbox = sf::CircleShape(33);
     player.hitbox.setPosition(player.sprite.getPosition());
     player.hitbox.setOrigin(33,33);
+    RecalculateAngles(player);
+    player.projManager = CreateProjectileManager(2, 2, player.sprite.getPosition() + player.dir*5.0f);
     player.hitbox.setScale(0.7, 1);
-
 }
 
 void RecalculateAngles(Player& player)
@@ -26,8 +27,19 @@ void RecalculateAngles(Player& player)
     player.dir.y = 10 * -cos(player.sprite.getRotation() * (3.141592653589793 / 180));
 }
 
+void PlayerPressedSpace(Player& player, float deltaTime)
+{
+    std::cout << player.projManager.chrono << std::endl;
+    RecalculateAngles(player);
+    if (player.projManager.chrono > player.projManager.timeBtw) {
+        AddProjectileToGame(player.projManager, player.dir, 400, 20,1);
+    }
+}
+
 void UpdatePlayer(Player& player, float deltaTime)
 {
+    RecalculateAngles(player);
+    player.projManager.position = player.sprite.getPosition() + player.dir*5.0f;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
         //printf("Rotate Right \n");
         player.sprite.setRotation(player.sprite.getRotation() - player.rotateSpeed * deltaTime);
@@ -94,13 +106,14 @@ void UpdatePlayer(Player& player, float deltaTime)
         }
     }
     player.hitbox.setPosition(player.sprite.getPosition());
+    UpdateProjectile(player.projManager, deltaTime);
 }
 
 void PlayerDraw(Player& player, sf::RenderWindow& window)
 {
     window.draw(player.hitbox);
     window.draw(player.sprite);
-
+    DrawProjectile(player.projManager, window);
     sf::Vector2f tempPos = player.sprite.getPosition();
 
     if (player.outWidth && player.sprite.getPosition().x > window.getSize().x*0.001f) {
