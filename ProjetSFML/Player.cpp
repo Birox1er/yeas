@@ -16,6 +16,7 @@ void InitPlayer(Player& player, sf::Vector2f position)
 
     player.hitbox.setPosition(player.sprite.getPosition());
     player.hitbox.setOrigin(33,33);
+    player.hitbox.setScale(0.7, 1);
 
 }
 
@@ -30,10 +31,14 @@ void UpdatePlayer(Player& player, float deltaTime)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
         //printf("Rotate Right \n");
         player.sprite.setRotation(player.sprite.getRotation() - player.rotateSpeed * deltaTime);
+        player.hitbox.setRotation(player.sprite.getRotation());
+
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
         //printf("Rotate left \n");
         player.sprite.setRotation(player.sprite.getRotation() + player.rotateSpeed * deltaTime);
+        player.hitbox.setRotation(player.sprite.getRotation());
+
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
         //printf("Move Forward \n");
@@ -49,6 +54,7 @@ void UpdatePlayer(Player& player, float deltaTime)
         }
         //std::cout << player.speed << std::endl;
         player.sprite.setPosition(pos.x + player.dir.x * player.speed * deltaTime, pos.y + player.dir.y * player.speed * deltaTime);
+        player.hitbox.setRotation(player.sprite.getRotation());
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
         //printf("Move Backward \n");
