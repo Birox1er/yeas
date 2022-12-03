@@ -97,30 +97,56 @@ void PlayerDraw(Player& player, sf::RenderWindow& window)
 
     sf::Vector2f tempPos = player.sprite.getPosition();
 
-    if (player.outWidth && player.sprite.getPosition().x > window.getSize().x*0.001f) {
+    if (player.outWidth && player.sprite.getPosition().x > window.getSize().x*0.5f) {
         player.sprite.setPosition(tempPos.x - window.getSize().x, tempPos.y);
         player.hitbox.setPosition(tempPos.x - window.getSize().x, tempPos.y);
         window.draw(player.sprite);
-        window.draw(player.hitbox);
- 
+        //window.draw(player.hitbox);
+        //player.hitbox.setPosition(tempPos.x, tempPos.y);
+        //player.sprite.setPosition(tempPos.x, tempPos.y);
     }
-    if (player.outWidth && player.sprite.getPosition().x < window.getSize().x*0.001f) {
+    if (player.outWidth && player.sprite.getPosition().x < window.getSize().x*0.5) {
         player.sprite.setPosition(tempPos.x + window.getSize().x, tempPos.y);
         player.hitbox.setPosition(tempPos.x + window.getSize().x, tempPos.y);
         window.draw(player.sprite);
-        window.draw(player.hitbox);
+        //window.draw(player.hitbox);
+        //player.hitbox.setPosition(tempPos.x, tempPos.y);
+        //player.sprite.setPosition(tempPos.x, tempPos.y);
     }
-    if (player.outHeight && player.sprite.getPosition().y > window.getSize().y*0.001f) {
+    if (player.outHeight && player.sprite.getPosition().y > window.getSize().y*0.5) {
         player.sprite.setPosition(tempPos.x, tempPos.y - window.getSize().y);
         player.hitbox.setPosition(tempPos.x, tempPos.y - window.getSize().y);
         window.draw(player.sprite);
-        window.draw(player.hitbox);
+        //window.draw(player.hitbox);
+        //player.hitbox.setPosition(tempPos.x, tempPos.y);
+        //player.sprite.setPosition(tempPos.x, tempPos.y);
     }
-    if (player.outHeight && player.sprite.getPosition().y < window.getSize().y*0.001f) {
+    if (player.outHeight && player.sprite.getPosition().y < window.getSize().y*0.5) {
         player.sprite.setPosition(tempPos.x, tempPos.y + window.getSize().y);
         player.hitbox.setPosition(tempPos.x, tempPos.y + window.getSize().y);
         window.draw(player.sprite);
+        //window.draw(player.hitbox);
+        //player.hitbox.setPosition(tempPos.x, tempPos.y);
+        //player.sprite.setPosition(tempPos.x, tempPos.y);
+    }
+    player.hitbox.setPosition(tempPos.x, tempPos.y);
+    player.sprite.setPosition(tempPos.x, tempPos.y);
+
+    if (player.outWidth && player.hitbox.getPosition().x > window.getSize().x) {
+        player.hitbox.setPosition(tempPos.x - window.getSize().x, tempPos.y);
         window.draw(player.hitbox);
     }
-    
+    if (player.outWidth && player.hitbox.getPosition().x < 0) {
+        player.hitbox.setPosition(tempPos.x - window.getSize().x, tempPos.y);
+        window.draw(player.hitbox);
+    }
+    if (player.outHeight && player.hitbox.getPosition().y > 0) {
+        player.hitbox.setPosition(tempPos.x, tempPos.y - window.getSize().y);
+        window.draw(player.hitbox);
+
+    }
+    if (player.outHeight && player.hitbox.getPosition().y < window.getSize().y) {
+        player.hitbox.setPosition(tempPos.x, tempPos.y - window.getSize().y);
+        window.draw(player.hitbox);
+    }
 }

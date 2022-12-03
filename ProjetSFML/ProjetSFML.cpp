@@ -23,7 +23,7 @@ int main()
 
     ///FOREGROUND CATHODIC TV
     sf::Texture bgtext;
-    bgtext.loadFromFile("../Sprites/Effects.png");
+    bgtext.loadFromFile("../Sprites/aaa.jpg");
     sf::Sprite bg;
     bg.setTexture(bgtext);
 
