@@ -38,6 +38,12 @@ int main()
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
+            if (event.type == sf::Event::KeyPressed) {
+                if (event.key.code == sf::Keyboard::Space) {
+                    std::cout << "aya";
+                    PressedSpace(game, deltaTime);
+                }
+            }
         }
         GameUpdate(game, deltaTime);
         window.clear();

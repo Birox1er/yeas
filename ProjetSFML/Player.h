@@ -2,13 +2,15 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <iostream>
+#include "Projectile.h"
 
 
 struct Player
 {
 	sf::Sprite sprite;
 	sf::Texture texture;
-	sf::CircleShape hitbox = sf::CircleShape(33, 10);
+	sf::CircleShape hitbox;
+	ProjectileManager projManager;
 	int rotateSpeed = 100;
 	float speed = 0;
 	float AccSpeed = 10;
@@ -24,5 +26,6 @@ struct Player
 
 void InitPlayer(Player& player, sf::Vector2f position);
 void RecalculateAngles(Player& player);
+void PlayerPressedSpace(Player& player, float deltaTime);
 void UpdatePlayer(Player& player, float deltaTime);
 void PlayerDraw(Player& player, sf::RenderWindow& window);
