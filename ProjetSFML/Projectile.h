@@ -9,6 +9,7 @@ struct Projectile
 	int rebound;
 	sf::Vector2f direction;
 	sf::CircleShape shape;
+	bool IsEnemy = false;
 };
 struct ProjectileManager {
 	float timeBtw;
