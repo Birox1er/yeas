@@ -1,5 +1,6 @@
 #include "Enemy.h"
 #include "Player.h"
+#include "Projectile.h"
 
 EnemyManager CreateEnemyManager(float timeBtw, sf::Vector2f position, float chrono)
 {
@@ -77,9 +78,10 @@ void UpdateEnemy(EnemyManager& enemies, float deltaTime,sf::Vector2f size,Player
     if (enemies.enemies.size()> 0) {
         std::list<Enemy>::iterator it = enemies.enemies.begin();
         while (it != enemies.enemies.end()) {
+            (*it).enemyShape.setPointCount((*it).life);
+            (*it).enemyShape.setRadius((*it).life * 10);
             if ((*it).enemyShape.getPosition().x <= (*it).enemyShape.getRadius() || (*it).enemyShape.getPosition().x >= size.x - (*it).enemyShape.getRadius()) {
                 (*it).dir.x = -(*it).dir.x;
-
             }
             if ((*it).enemyShape.getPosition().y <= (*it).enemyShape.getRadius() || (*it).enemyShape.getPosition().y >= size.y - (*it).enemyShape.getRadius()) {
                 (*it).dir.y = -(*it).dir.y;

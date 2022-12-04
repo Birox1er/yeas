@@ -5,6 +5,8 @@
 
 struct Player;
 
+struct ProjectileManager;
+
 struct Enemy
 {
 	int baseSpeed = 100;
