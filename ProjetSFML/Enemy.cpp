@@ -52,6 +52,9 @@ Enemy CreateEnemy(int speed, int life, sf::Vector2f origine,int size, Player& pl
     sf::CircleShape enemyShape(size*10, life);
     enemyShape.setOrigin(size, size);
     enemyShape.setPosition(origine);
+    enemyShape.setFillColor(sf::Color::Black);
+    enemyShape.setOutlineColor(sf::Color::White);
+    enemyShape.setOutlineThickness(.7f);
     sf::Vector2f direction = (origine - player.sprite.getPosition());
     sf::Vector2f position = origine;
     Enemy enemy{ 100,speed,life,size,enemyShape,origine,position,direction};
