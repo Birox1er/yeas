@@ -17,7 +17,7 @@ void InitPlayer(Player& player, sf::Vector2f position)
     player.hitbox.setPosition(player.sprite.getPosition());
     player.hitbox.setOrigin(33,33);
     RecalculateAngles(player);
-    player.projManager = CreateProjectileManager(2, 2, player.sprite.getPosition() + player.dir*5.0f);
+    player.projManager = CreateProjectileManager(0.1f, 0.1f, player.sprite.getPosition() + player.dir*5.0f);
     player.hitbox.setScale(0.7, 1);
 }
 
@@ -32,7 +32,7 @@ void PlayerPressedSpace(Player& player, float deltaTime)
     std::cout << player.projManager.chrono << std::endl;
     RecalculateAngles(player);
     if (player.projManager.chrono > player.projManager.timeBtw) {
-        AddProjectileToGame(player.projManager, player.dir, 400, 20,1);
+        AddProjectileToGame(player.projManager, player.dir, 400, 10,1);
     }
 }
 

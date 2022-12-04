@@ -7,6 +7,8 @@ void AddProjectileToGame(ProjectileManager& projectileManager, sf::Vector2f dire
 	proj.shape.setRadius(radius);
 	proj.shape.setOrigin(radius, radius);
 	proj.shape.setPosition(projectileManager.position);
+	proj.shape.setFillColor(sf::Color::Black);
+	proj.shape.setOutlineThickness(.8f);
 	projectileManager.projectiles.push_back(proj);
 
 }
@@ -26,10 +28,10 @@ void UpdateProjectile(ProjectileManager& projManager, float deltaTime,sf::Vector
 				(*it).direction.x = -(*it).direction.x;
 				it->IsEnemy = !it->IsEnemy;
 				if (it->IsEnemy) {
-					it->shape.setFillColor(sf::Color::Red);
+					it->shape.setOutlineColor(sf::Color::Red);
 				}
 				else {
-					it->shape.setFillColor(sf::Color::White);
+					it->shape.setOutlineColor(sf::Color::White);
 				}
 				
 			}
@@ -38,10 +40,10 @@ void UpdateProjectile(ProjectileManager& projManager, float deltaTime,sf::Vector
 				std::cout << (*it).direction.x << (*it).direction.y << std::endl;
 				it->IsEnemy = !it->IsEnemy;
 				if (it->IsEnemy) {
-					it->shape.setFillColor(sf::Color::Red);
+					it->shape.setOutlineColor(sf::Color::Red);
 				}
 				else {
-					it->shape.setFillColor(sf::Color::White);
+					it->shape.setOutlineColor(sf::Color::White);
 				}
 			}
 			sf::Vector2f norm = Normalize((*it).direction);

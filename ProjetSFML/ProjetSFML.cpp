@@ -40,7 +40,7 @@ int main()
             }
             if (event.type == sf::Event::KeyPressed) {
                 if (event.key.code == sf::Keyboard::Space) {
-                    std::cout << "aya";
+                    //std::cout << "ayayo";
                     PressedSpace(game, deltaTime);
                 }
             }
@@ -53,7 +53,7 @@ int main()
         GameDraw(game, window);
         window.display();
     }
-
+    //I'll try Save Here 
 }
 
 // Exécuter le programme : Ctrl+F5 ou menu Déboguer > Exécuter sans débogage
