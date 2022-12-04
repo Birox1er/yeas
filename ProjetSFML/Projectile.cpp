@@ -17,11 +17,19 @@ ProjectileManager CreateProjectileManager(float timeBtw, float chrono, sf::Vecto
 	return projManager;
 }
 
-void UpdateProjectile(ProjectileManager& projManager, float timeDeltaTime)
+void UpdateProjectile(ProjectileManager& projManager, float timeDeltaTime,sf::Vector2f size)
 {
 	if (projManager.projectiles.size() > 0) {
 		std::list<Projectile>::iterator it = projManager.projectiles.begin();
 		while (it != projManager.projectiles.end()) {
+			if ((*it).shape.getPosition().x <= (*it).shape.getRadius() || (*it).shape.getPosition().x >= size.x - (*it).shape.getRadius()) {
+				(*it).direction.x = -(*it).direction.x;
+				
+			}
+			if ((*it).shape.getPosition().y <= (*it).shape.getRadius() || (*it).shape.getPosition().y >= size.y - (*it).shape.getRadius()) {
+				(*it).direction.y = -(*it).direction.y;
+				std::cout << (*it).direction.x << (*it).direction.y << std::endl;
+			}
 			sf::Vector2f norm = Normalize((*it).direction);
 			(*it).shape.setPosition((*it).shape.getPosition().x+norm.x * (*it).speed * timeDeltaTime, (*it).shape.getPosition().y+norm.y * (*it).speed * timeDeltaTime);
 			it++;

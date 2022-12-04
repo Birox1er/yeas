@@ -27,5 +27,5 @@ struct Player
 void InitPlayer(Player& player, sf::Vector2f position);
 void RecalculateAngles(Player& player);
 void PlayerPressedSpace(Player& player, float deltaTime);
-void UpdatePlayer(Player& player, float deltaTime);
+void UpdatePlayer(Player& player, float deltaTime,sf::Vector2f size);
 void PlayerDraw(Player& player, sf::RenderWindow& window);

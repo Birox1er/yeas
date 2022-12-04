@@ -36,7 +36,7 @@ void PlayerPressedSpace(Player& player, float deltaTime)
     }
 }
 
-void UpdatePlayer(Player& player, float deltaTime)
+void UpdatePlayer(Player& player, float deltaTime,sf::Vector2f size)
 {
     RecalculateAngles(player);
     player.projManager.position = player.sprite.getPosition() + player.dir*5.0f;
@@ -106,7 +106,7 @@ void UpdatePlayer(Player& player, float deltaTime)
         }
     }
     player.hitbox.setPosition(player.sprite.getPosition());
-    UpdateProjectile(player.projManager, deltaTime);
+    UpdateProjectile(player.projManager, deltaTime,size);
 }
 
 void PlayerDraw(Player& player, sf::RenderWindow& window)

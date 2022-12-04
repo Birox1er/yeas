@@ -34,7 +34,7 @@ void GameDraw(Game& game, sf::RenderWindow& window)
 }
 void GameUpdate(Game& game, float deltaTime)
 {
-	UpdatePlayer(game.player, deltaTime);
+	UpdatePlayer(game.player, deltaTime, game.size);
 	UpdateEnemy(game.enemy, deltaTime);
 	CheckOutsides(game, game.player);
 }
