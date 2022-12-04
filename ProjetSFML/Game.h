@@ -8,7 +8,7 @@ struct Game
 	sf::Vector2f size;
 	sf::RectangleShape shape;
 	Player player;
-	Enemy enemy;
+	EnemyManager enemies; 
 
 };
 

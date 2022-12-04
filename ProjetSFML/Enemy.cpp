@@ -1,7 +1,13 @@
 #include "Enemy.h"
 #include "Player.h"
 
-Enemy GenerateEnemyAndCreate(int windoSizeX, int windoSizeY, Player& player)
+EnemyManager CreateEnemyManager(float timeBtw, sf::Vector2f position, float chrono)
+{
+    EnemyManager enemymanager{ timeBtw,position,chrono };
+    return enemymanager;
+}
+
+void GenerateEnemyAndCreate(EnemyManager& enemyManager, int windoSizeX, int windoSizeY, Player& player)
 {
 
     int seed = rand()% 100;
@@ -44,11 +50,12 @@ Enemy GenerateEnemyAndCreate(int windoSizeX, int windoSizeY, Player& player)
     speed = baseSpeed / life;
     size = life;
     Enemy en = CreateEnemy(speed, life, pos, size, player);
-    return en;
+    enemyManager.enemies.push_back(en);
 }
 
 Enemy CreateEnemy(int speed, int life, sf::Vector2f origine,int size, Player& player)
 {
+
     sf::CircleShape enemyShape(size*10, life);
     enemyShape.setOrigin(size, size);
     enemyShape.setPosition(origine);
@@ -61,11 +68,37 @@ Enemy CreateEnemy(int speed, int life, sf::Vector2f origine,int size, Player& pl
 
     return enemy;
 }
-void UpdateEnemy(Enemy& enemy, float deltaTime) {
+void UpdateEnemy(EnemyManager& enemies, float deltaTime,sf::Vector2f size,Player& player) {
+    
+    if (enemies.chrono >= enemies.timeBtw) {
+        enemies.chrono = 0;
+        GenerateEnemyAndCreate(enemies, size.x, size.y, player);
+    }
+    if (enemies.enemies.size()> 0) {
+        std::list<Enemy>::iterator it = enemies.enemies.begin();
+        while (it != enemies.enemies.end()) {
+            if ((*it).enemyShape.getPosition().x <= (*it).enemyShape.getRadius() || (*it).enemyShape.getPosition().x >= size.x - (*it).enemyShape.getRadius()) {
+                (*it).dir.x = -(*it).dir.x;
 
-    enemy.enemyShape.move(Normalize(enemy.dir) * -deltaTime * (float)enemy.speed);
+            }
+            if ((*it).enemyShape.getPosition().y <= (*it).enemyShape.getRadius() || (*it).enemyShape.getPosition().y >= size.y - (*it).enemyShape.getRadius()) {
+                (*it).dir.y = -(*it).dir.y;
+                std::cout << (*it).dir.x << (*it).dir.y << std::endl;
+            }
+            sf::Vector2f norm = Normalize((*it).dir);
+            (*it).enemyShape.setPosition((*it).enemyShape.getPosition().x + norm.x * (*it).speed * deltaTime, (*it).enemyShape.getPosition().y + norm.y * (*it).speed * deltaTime);
+            it++;
+        }
+    }
+    enemies.chrono += deltaTime;
 }
-void EnemyDraw(Enemy& enemy, sf::RenderWindow& window)
+void EnemyDraw(EnemyManager& enemies, sf::RenderWindow& window)
 {
-    window.draw(enemy.enemyShape);
+    if (enemies.enemies.size() > 0) {
+        std::list<Enemy>::iterator it = enemies.enemies.begin();
+        while (it != enemies.enemies.end()) {
+            window.draw((*it).enemyShape);
+            it++;
+        }
+    }
 }

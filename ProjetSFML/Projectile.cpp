@@ -17,7 +17,7 @@ ProjectileManager CreateProjectileManager(float timeBtw, float chrono, sf::Vecto
 	return projManager;
 }
 
-void UpdateProjectile(ProjectileManager& projManager, float timeDeltaTime,sf::Vector2f size)
+void UpdateProjectile(ProjectileManager& projManager, float deltaTime,sf::Vector2f size)
 {
 	if (projManager.projectiles.size() > 0) {
 		std::list<Projectile>::iterator it = projManager.projectiles.begin();
@@ -45,11 +45,11 @@ void UpdateProjectile(ProjectileManager& projManager, float timeDeltaTime,sf::Ve
 				}
 			}
 			sf::Vector2f norm = Normalize((*it).direction);
-			(*it).shape.setPosition((*it).shape.getPosition().x+norm.x * (*it).speed * timeDeltaTime, (*it).shape.getPosition().y+norm.y * (*it).speed * timeDeltaTime);
+			(*it).shape.setPosition((*it).shape.getPosition().x+norm.x * (*it).speed * deltaTime, (*it).shape.getPosition().y+norm.y * (*it).speed * deltaTime);
 			it++;
 		}
 	}
-	projManager.chrono += timeDeltaTime;
+	projManager.chrono += deltaTime;
 }
 void DrawProjectile(ProjectileManager& projManager, sf::RenderWindow& window) {
 	if (projManager.projectiles.size() > 0) {

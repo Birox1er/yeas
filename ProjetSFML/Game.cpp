@@ -8,7 +8,7 @@ void InitGame(Game& game, sf::Vector2f position, sf::Vector2f size)
 	game.shape.setSize(size);
 	game.shape.setOrigin(size / 2.f);
 	InitPlayer(game.player, position);
-	game.enemy = GenerateEnemyAndCreate(size.x, size.y, game.player);
+	game.enemies = CreateEnemyManager(10.0f,game.position,10.0f);
 
 }
 void CheckOutsides(Game& game, Player& player) {
@@ -30,12 +30,12 @@ void CheckOutsides(Game& game, Player& player) {
 void GameDraw(Game& game, sf::RenderWindow& window)
 {
 	PlayerDraw(game.player, window);
-	EnemyDraw(game.enemy, window);
+	EnemyDraw(game.enemies, window);
 }
 void GameUpdate(Game& game, float deltaTime)
 {
 	UpdatePlayer(game.player, deltaTime, game.size);
-	UpdateEnemy(game.enemy, deltaTime);
+	UpdateEnemy(game.enemies, deltaTime,game.size,game.player);
 	CheckOutsides(game, game.player);
 }
 
