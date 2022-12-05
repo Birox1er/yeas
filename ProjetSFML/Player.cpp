@@ -17,7 +17,7 @@ void InitPlayer(Player& player, sf::Vector2f position)
     player.hitbox.setPosition(player.sprite.getPosition());
     player.hitbox.setOrigin(33,33);
     RecalculateAngles(player);
-    player.projManager = CreateProjectileManager(0.1f, 0.1f, player.sprite.getPosition() + player.dir*5.0f);
+    player.projManager = CreateProjectileManager(0.5f, 0.5f, player.sprite.getPosition() + player.dir*5.0f);
     player.hitbox.setScale(0.7, 1);
 }
 

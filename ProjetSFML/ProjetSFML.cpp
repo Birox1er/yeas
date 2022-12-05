@@ -13,28 +13,20 @@ int main()
     //player.triangle = sf::CircleShape (30,3);
     sf::Clock mainClock;
     float deltaTime;
-   
-    #pragma region Initialisation
     Game game;
     InitGame(game, { window.getSize().x * 0.5f,window.getSize().y * 0.5f }, (sf::Vector2f)window.getSize());
-
-    #pragma endregion
-
-
     ///FOREGROUND CATHODIC TV
     sf::Texture bgtext;
     bgtext.loadFromFile("../Sprites/Effects.png");
     sf::Sprite bg;
     bg.setTexture(bgtext);
-
-
     // Game loop
     while (window.isOpen()) {
         sf::Event event;
         deltaTime = mainClock.restart().asSeconds();
         while (window.pollEvent(event)) {
             // Process any input event here
-            
+
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
@@ -48,14 +40,13 @@ int main()
         GameUpdate(game, deltaTime);
         window.clear();
         // Whatever I want to draw goes here
-        
+
         //window.draw(bg);
         GameDraw(game, window);
         window.display();
     }
     //I'll try Save Here 
 }
-
 // Exécuter le programme : Ctrl+F5 ou menu Déboguer > Exécuter sans débogage
 // Déboguer le programme : F5 ou menu Déboguer > Démarrer le débogage
 
