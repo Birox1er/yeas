@@ -115,7 +115,7 @@ void UpdatePlayer(Player& player, float deltaTime,sf::Vector2f size)
     std::list<Projectile>::iterator it = player.projManager.projectiles.begin();
     while (it != player.projManager.projectiles.end()) {
         sf::Vector2f distance = player.hitboxFront.getPosition() - (*it).shape.getPosition();
-        if (Norm(distance) <= player.hitboxFront.getRadius() + (*it).shape.getRadius() && (*it).IsEnemy == true) {
+        if (Norm(distance) <= player.hitboxFront.getRadius() + (*it).shape.getRadius() && (*it).IsEnemy && (*it).canHit) {
             player.life -= 1;
             (*it).direction = (*it).direction - distance;
             it = player.projManager.projectiles.erase(it);

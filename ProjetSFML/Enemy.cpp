@@ -104,7 +104,7 @@ void UpdateEnemy(EnemyManager& enemies, float deltaTime,sf::Vector2f size,Player
 
             sf::Vector2f distance2 = (*it).enemyShape.getPosition() - player.hitboxFront.getPosition();
             if (Norm(distance2) <= (*it).enemyShape.getRadius() + player.hitboxFront.getRadius()) {
-                player.life = 0;
+                player.life -= 1;
                 (*it).life = 2;
             }
 

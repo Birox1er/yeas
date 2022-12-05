@@ -28,6 +28,7 @@ struct Player
 	bool outHeight = false;
 
 	bool returntome = false;
+
 };
 
 void InitPlayer(Player& player, sf::Vector2f position);

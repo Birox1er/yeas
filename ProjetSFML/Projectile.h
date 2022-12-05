@@ -12,7 +12,7 @@ struct Projectile
 	sf::Vector2f direction;
 	sf::CircleShape shape;
 	bool IsEnemy = false;
-	bool returntome = false;
+	bool canHit = true;
 };
 struct ProjectileManager {
 	float timeBtw;

@@ -48,6 +48,7 @@ void UpdateProjectile(ProjectileManager& projManager, float deltaTime, sf::Vecto
 		}
 		else {
 			while (it != projManager.projectiles.end()) {
+				(*it).canHit = false;
 				(*it).shape.setOutlineColor(sf::Color::Green);
 				(*it).direction = player.sprite.getPosition() - (*it).shape.getPosition();
 				float norm = Norm((*it).direction);
