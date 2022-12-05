@@ -13,6 +13,8 @@ struct Player
 
 
 	ProjectileManager projManager;
+
+	int life = 3;
 	int rotateSpeed = 150;
 	float speed = 0;
 	float AccSpeed = 15;

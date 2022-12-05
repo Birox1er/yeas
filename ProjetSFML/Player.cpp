@@ -110,41 +110,59 @@ void UpdatePlayer(Player& player, float deltaTime,sf::Vector2f size)
 
         }
     }
+
+    std::list<Projectile>::iterator it = player.projManager.projectiles.begin();
+    while (it != player.projManager.projectiles.end()) {
+        sf::Vector2f distance = player.hitboxFront.getPosition() - (*it).shape.getPosition();
+        if (Norm(distance) <= player.hitboxFront.getRadius() + (*it).shape.getRadius() && (*it).IsEnemy == true) {
+            player.life -= 1;
+            (*it).direction = (*it).direction - distance;
+            it = player.projManager.projectiles.erase(it);
+            std::cout << player.life << std::endl;
+        }
+        it++;
+    }
+    
+    
     player.hitboxFront.setPosition(player.sprite.getPosition());
     UpdateProjectile(player.projManager, deltaTime,size, player);
 }
 
 void PlayerDraw(Player& player, sf::RenderWindow& window)
 {
-    window.draw(player.hitboxFront);
-    window.draw(player.sprite);
-    DrawProjectile(player.projManager, window);
-    sf::Vector2f tempPos = player.sprite.getPosition();
+    if (player.life > 0) {
+        window.draw(player.hitboxFront);
+        window.draw(player.sprite);
+        DrawProjectile(player.projManager, window);
+        sf::Vector2f tempPos = player.sprite.getPosition();
 
-    if (player.outWidth && player.sprite.getPosition().x > window.getSize().x*0.001f) {
-        player.sprite.setPosition(tempPos.x - window.getSize().x, tempPos.y);
-        player.hitboxFront.setPosition(tempPos.x - window.getSize().x, tempPos.y);
-        window.draw(player.sprite);
-        window.draw(player.hitboxFront);
- 
+        if (player.outWidth && player.sprite.getPosition().x > window.getSize().x * 0.001f) {
+            player.sprite.setPosition(tempPos.x - window.getSize().x, tempPos.y);
+            player.hitboxFront.setPosition(tempPos.x - window.getSize().x, tempPos.y);
+            window.draw(player.sprite);
+            window.draw(player.hitboxFront);
+
+        }
+        if (player.outWidth && player.sprite.getPosition().x < window.getSize().x * 0.001f) {
+            player.sprite.setPosition(tempPos.x + window.getSize().x, tempPos.y);
+            player.hitboxFront.setPosition(tempPos.x + window.getSize().x, tempPos.y);
+            window.draw(player.sprite);
+            window.draw(player.hitboxFront);
+        }
+        if (player.outHeight && player.sprite.getPosition().y > window.getSize().y * 0.001f) {
+            player.sprite.setPosition(tempPos.x, tempPos.y - window.getSize().y);
+            player.hitboxFront.setPosition(tempPos.x, tempPos.y - window.getSize().y);
+            window.draw(player.sprite);
+            window.draw(player.hitboxFront);
+        }
+        if (player.outHeight && player.sprite.getPosition().y < window.getSize().y * 0.001f) {
+            player.sprite.setPosition(tempPos.x, tempPos.y + window.getSize().y);
+            player.hitboxFront.setPosition(tempPos.x, tempPos.y + window.getSize().y);
+            window.draw(player.sprite);
+            window.draw(player.hitboxFront);
+        }
     }
-    if (player.outWidth && player.sprite.getPosition().x < window.getSize().x*0.001f) {
-        player.sprite.setPosition(tempPos.x + window.getSize().x, tempPos.y);
-        player.hitboxFront.setPosition(tempPos.x + window.getSize().x, tempPos.y);
-        window.draw(player.sprite);
-        window.draw(player.hitboxFront);
-    }
-    if (player.outHeight && player.sprite.getPosition().y > window.getSize().y*0.001f) {
-        player.sprite.setPosition(tempPos.x, tempPos.y - window.getSize().y);
-        player.hitboxFront.setPosition(tempPos.x, tempPos.y - window.getSize().y);
-        window.draw(player.sprite);
-        window.draw(player.hitboxFront);
-    }
-    if (player.outHeight && player.sprite.getPosition().y < window.getSize().y*0.001f) {
-        player.sprite.setPosition(tempPos.x, tempPos.y + window.getSize().y);
-        player.hitboxFront.setPosition(tempPos.x, tempPos.y + window.getSize().y);
-        window.draw(player.sprite);
-        window.draw(player.hitboxFront);
-    }
+    
+    
     
 }
