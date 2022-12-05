@@ -116,7 +116,7 @@ void UpdatePlayer(Player& player, float deltaTime,sf::Vector2f size)
     while (it != player.projManager.projectiles.end()) {
         sf::Vector2f distance = player.hitboxFront.getPosition() - (*it).shape.getPosition();
         if (Norm(distance) <= player.hitboxFront.getRadius() + (*it).shape.getRadius() && (*it).IsEnemy && (*it).canHit) {
-            player.life -= 1;
+            //player.life -= 1;
             it = player.projManager.projectiles.erase(it);
             std::cout << player.life << std::endl;
         }
@@ -124,7 +124,18 @@ void UpdatePlayer(Player& player, float deltaTime,sf::Vector2f size)
             it++;
         }
     }
-    
+    switch (player.life)
+    {
+    case(3):
+        player.texture.loadFromFile("Sprites/Player.png");
+        break;
+    case(2):
+        player.texture.loadFromFile("Sprites/Player_2.png");
+        break;
+    case(1):
+        player.texture.loadFromFile("Sprites/Player_3.png");
+        break;
+    }
     
     player.hitboxFront.setPosition(player.sprite.getPosition());
     UpdateProjectile(player.projManager, deltaTime,size, player);
