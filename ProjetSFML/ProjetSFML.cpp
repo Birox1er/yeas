@@ -10,16 +10,17 @@ int main()
     std::srand(time(nullptr));
     sf::RenderWindow window(sf::VideoMode(1000, 800), "UwU : Ultra Warn Universe");
     // Initialise everything below
-    //player.triangle = sf::CircleShape (30,3);
     sf::Clock mainClock;
     float deltaTime;
     Game game;
     InitGame(game, { window.getSize().x * 0.5f,window.getSize().y * 0.5f }, (sf::Vector2f)window.getSize());
+    #pragma region MyRegion
     ///FOREGROUND CATHODIC TV
     sf::Texture bgtext;
-    bgtext.loadFromFile("../Sprites/Effects.png");
+    bgtext.loadFromFile("Sprites/Effects.png");
     sf::Sprite bg;
     bg.setTexture(bgtext);
+#pragma endregion Background
     // Game loop
     while (window.isOpen()) {
         sf::Event event;
@@ -42,10 +43,10 @@ int main()
         }
         GameUpdate(game, deltaTime);
         window.clear();
-        // Whatever I want to draw goes here
 
-        //window.draw(bg);
+        window.draw(bg);
         GameDraw(game, window);
+
         window.display();
     }
     //I'll try Save Here 
