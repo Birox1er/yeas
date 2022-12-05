@@ -14,8 +14,8 @@ void GenerateEnemyAndCreate(EnemyManager& enemyManager, int windoSizeX, int wind
     int seed = rand()% 100;
     std::cout << seed << std::endl;
     sf::Vector2f pos;
-    pos.x = rand() % windoSizeX;
-    pos.y = rand() % windoSizeY;
+    pos.x = (rand() % (windoSizeX-200))+100;
+    pos.y = (rand() % (windoSizeY-200))+100;
     int baseSpeed = 500;
     int speed;
     int life;
@@ -78,6 +78,7 @@ void UpdateEnemy(EnemyManager& enemies, float deltaTime,sf::Vector2f size,Player
     if (enemies.enemies.size()> 0) {
         std::list<Enemy>::iterator it = enemies.enemies.begin();
         while (it != enemies.enemies.end()) {
+            
             (*it).enemyShape.setPointCount((*it).life);
             (*it).enemyShape.setRadius((*it).life * 10);
             if ((*it).enemyShape.getPosition().x <= (*it).enemyShape.getRadius() || (*it).enemyShape.getPosition().x >= size.x - (*it).enemyShape.getRadius()) {
@@ -89,7 +90,22 @@ void UpdateEnemy(EnemyManager& enemies, float deltaTime,sf::Vector2f size,Player
             }
             sf::Vector2f norm = Normalize((*it).dir);
             (*it).enemyShape.setPosition((*it).enemyShape.getPosition().x + norm.x * (*it).speed * deltaTime, (*it).enemyShape.getPosition().y + norm.y * (*it).speed * deltaTime);
-            it++;
+            std::list<Projectile>::iterator it2 = player.projManager.projectiles.begin();
+            while (it2 != player.projManager.projectiles.end()) {
+                sf::Vector2f distance = (*it).enemyShape.getPosition() - (*it2).shape.getPosition();
+                if (Norm(distance) <= (*it).enemyShape.getRadius() + (*it2).shape.getRadius() && (*it2).IsEnemy == false) {
+                        (*it).life -= 1;
+                        (*it2).direction = (*it2).direction - distance;
+                        (*it2).IsEnemy = true;
+                }
+                it2++;
+            }
+            if ((*it).life < 3) {
+                it = enemies.enemies.erase(it);
+            }
+            if (it != enemies.enemies.end()) {
+                it++;
+            }
         }
     }
     enemies.chrono += deltaTime;

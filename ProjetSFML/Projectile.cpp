@@ -26,25 +26,18 @@ void UpdateProjectile(ProjectileManager& projManager, float deltaTime,sf::Vector
 		while (it != projManager.projectiles.end()) {
 			if ((*it).shape.getPosition().x <= (*it).shape.getRadius() || (*it).shape.getPosition().x >= size.x - (*it).shape.getRadius()) {
 				(*it).direction.x = -(*it).direction.x;
-				it->IsEnemy = !it->IsEnemy;
-				if (it->IsEnemy) {
-					it->shape.setOutlineColor(sf::Color::Red);
-				}
-				else {
-					it->shape.setOutlineColor(sf::Color::White);
-				}
-				
+				it->IsEnemy = !it->IsEnemy;			
 			}
 			if ((*it).shape.getPosition().y <= (*it).shape.getRadius() || (*it).shape.getPosition().y >= size.y - (*it).shape.getRadius()) {
 				(*it).direction.y = -(*it).direction.y;
 				std::cout << (*it).direction.x << (*it).direction.y << std::endl;
 				it->IsEnemy = !it->IsEnemy;
-				if (it->IsEnemy) {
-					it->shape.setOutlineColor(sf::Color::Red);
-				}
-				else {
-					it->shape.setOutlineColor(sf::Color::White);
-				}
+			}
+			if (it->IsEnemy) {
+				it->shape.setOutlineColor(sf::Color::Red);
+			}
+			else {
+				it->shape.setOutlineColor(sf::Color::White);
 			}
 			sf::Vector2f norm = Normalize((*it).direction);
 			(*it).shape.setPosition((*it).shape.getPosition().x+norm.x * (*it).speed * deltaTime, (*it).shape.getPosition().y+norm.y * (*it).speed * deltaTime);
@@ -63,8 +56,13 @@ void DrawProjectile(ProjectileManager& projManager, sf::RenderWindow& window) {
 		//std::cout << "drawn \n";
 	}
 }
+float Norm(sf::Vector2f vector)
+{
+	float norm = sqrt(vector.x * vector.x + vector.y * vector.y);
+	return norm;
+}
 sf::Vector2f Normalize(sf::Vector2f vector) {
-	float norme = sqrt(vector.x * vector.x + vector.y * vector.y);
-
-	return sf::Vector2f(vector.x / norme, vector.y / norme);
+	
+	float norm = Norm(vector);
+	return sf::Vector2f(vector.x / norm, vector.y / norm);
 }

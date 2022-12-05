@@ -23,5 +23,6 @@ void AddProjectileToGame(ProjectileManager& projectileManager,sf::Vector2f direc
 void UpdateProjectile(ProjectileManager& projManager, float deltaTime, sf::Vector2f size);
 void DrawProjectile(ProjectileManager& projManager, sf::RenderWindow& window);
 sf::Vector2f Normalize(sf::Vector2f vector);
+float Norm(sf::Vector2f vector);
 
 
