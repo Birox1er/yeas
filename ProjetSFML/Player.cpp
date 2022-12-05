@@ -39,6 +39,7 @@ void PlayerPressedSpace(Player& player, float deltaTime)
 }
 void PlayerPressedE(Player& player) {
     player.returntome = true;
+    player.MaxSpeed = 25;
 }
 
 void UpdatePlayer(Player& player, float deltaTime,sf::Vector2f size)
