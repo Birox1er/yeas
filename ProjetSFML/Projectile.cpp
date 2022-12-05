@@ -1,4 +1,5 @@
 #include "Projectile.h"
+#include "Player.h"
 
 void AddProjectileToGame(ProjectileManager& projectileManager, sf::Vector2f direction, int speed, int radius,int rebound)
 {
@@ -19,29 +20,49 @@ ProjectileManager CreateProjectileManager(float timeBtw, float chrono, sf::Vecto
 	return projManager;
 }
 
-void UpdateProjectile(ProjectileManager& projManager, float deltaTime,sf::Vector2f size)
+void UpdateProjectile(ProjectileManager& projManager, float deltaTime, sf::Vector2f size, Player& player)
 {
 	if (projManager.projectiles.size() > 0) {
 		std::list<Projectile>::iterator it = projManager.projectiles.begin();
-		while (it != projManager.projectiles.end()) {
-			if ((*it).shape.getPosition().x <= (*it).shape.getRadius() || (*it).shape.getPosition().x >= size.x - (*it).shape.getRadius()) {
-				(*it).direction.x = -(*it).direction.x;
-				it->IsEnemy = !it->IsEnemy;			
+		if (!player.returntome) {
+			while (it != projManager.projectiles.end()) {
+				if ((*it).shape.getPosition().x <= (*it).shape.getRadius() || (*it).shape.getPosition().x >= size.x - (*it).shape.getRadius()) {
+					(*it).direction.x = -(*it).direction.x;
+					it->IsEnemy = !it->IsEnemy;
+				}
+				if ((*it).shape.getPosition().y <= (*it).shape.getRadius() || (*it).shape.getPosition().y >= size.y - (*it).shape.getRadius()) {
+					(*it).direction.y = -(*it).direction.y;
+					//std::cout << (*it).direction.x << (*it).direction.y << std::endl;
+					it->IsEnemy = !it->IsEnemy;
+				}
+				if (it->IsEnemy) {
+					it->shape.setOutlineColor(sf::Color::Red);
+				}
+				else {
+					it->shape.setOutlineColor(sf::Color::White);
+				}
+				sf::Vector2f norm = Normalize((*it).direction);
+				(*it).shape.setPosition((*it).shape.getPosition().x + norm.x * (*it).speed * deltaTime, (*it).shape.getPosition().y + norm.y * (*it).speed * deltaTime);
+				it++;
 			}
-			if ((*it).shape.getPosition().y <= (*it).shape.getRadius() || (*it).shape.getPosition().y >= size.y - (*it).shape.getRadius()) {
-				(*it).direction.y = -(*it).direction.y;
-				std::cout << (*it).direction.x << (*it).direction.y << std::endl;
-				it->IsEnemy = !it->IsEnemy;
+		}
+		else {
+			while (it != projManager.projectiles.end()) {
+				(*it).shape.setOutlineColor(sf::Color::Green);
+				(*it).direction = player.sprite.getPosition() - (*it).shape.getPosition();
+				float norm = Norm((*it).direction);
+				(*it).shape.setPosition((*it).shape.getPosition().x + Normalize((*it).direction).x * (*it).speed * deltaTime, (*it).shape.getPosition().y + Normalize((*it).direction).y * (*it).speed * deltaTime);
+
+				if (norm <= (*it).shape.getRadius() + player.hitboxFront.getRadius()) {
+					it = projManager.projectiles.erase(it);
+					std::cout << "ERASE \n";
+				}else {
+					it++; 
+				}
 			}
-			if (it->IsEnemy) {
-				it->shape.setOutlineColor(sf::Color::Red);
+			if (player.projManager.projectiles.size() == 0) {
+				player.returntome = false;
 			}
-			else {
-				it->shape.setOutlineColor(sf::Color::White);
-			}
-			sf::Vector2f norm = Normalize((*it).direction);
-			(*it).shape.setPosition((*it).shape.getPosition().x+norm.x * (*it).speed * deltaTime, (*it).shape.getPosition().y+norm.y * (*it).speed * deltaTime);
-			it++;
 		}
 	}
 	projManager.chrono += deltaTime;

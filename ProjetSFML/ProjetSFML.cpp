@@ -35,6 +35,9 @@ int main()
                     //std::cout << "ayayo";
                     PressedSpace(game, deltaTime);
                 }
+                if (event.key.code == sf::Keyboard::E) {
+                    PressedE(game);
+                }
             }
         }
         GameUpdate(game, deltaTime);

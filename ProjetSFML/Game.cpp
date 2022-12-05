@@ -13,13 +13,13 @@ void InitGame(Game& game, sf::Vector2f position, sf::Vector2f size)
 }
 void CheckOutsides(Game& game, Player& player) {
 
-	if (player.hitbox.getPosition().x + player.hitbox.getRadius() > game.size.x || player.hitbox.getPosition().x - player.hitbox.getRadius() < 0) {
+	if (player.hitboxFront.getPosition().x + player.hitboxFront.getRadius() > game.size.x || player.hitboxFront.getPosition().x - player.hitboxFront.getRadius() < 0) {
 		player.outWidth = true;
 	}
 	else {
 		player.outWidth = false;
 	}
-	if (player.hitbox.getPosition().y + player.hitbox.getRadius() > game.size.y || player.hitbox.getPosition().y - player.hitbox.getRadius() < 0) {
+	if (player.hitboxFront.getPosition().y + player.hitboxFront.getRadius() > game.size.y || player.hitboxFront.getPosition().y - player.hitboxFront.getRadius() < 0) {
 		player.outHeight = true;
 	}
 	else {
@@ -42,4 +42,7 @@ void GameUpdate(Game& game, float deltaTime)
 void PressedSpace(Game& game, float deltaTime)
 {
 	PlayerPressedSpace(game.player, deltaTime);
+}
+void PressedE(Game& game) {
+	PlayerPressedE(game.player);
 }

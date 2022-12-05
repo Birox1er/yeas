@@ -12,13 +12,15 @@ void InitPlayer(Player& player, sf::Vector2f position)
     //Set pos to middle screen
     player.sprite.setPosition(position.x+11/2, position.y+11 / 2);
     //oui elle est grande l'image
-    player.sprite.setScale(.2f, .2f);
-    player.hitbox = sf::CircleShape(33);
-    player.hitbox.setPosition(player.sprite.getPosition());
-    player.hitbox.setOrigin(33,33);
+    player.sprite.setScale(.15f, .15f);
     RecalculateAngles(player);
-    player.projManager = CreateProjectileManager(0.5f, 0.5f, player.sprite.getPosition() + player.dir*5.0f);
-    player.hitbox.setScale(0.7, 1);
+    player.projManager = CreateProjectileManager(0, 0, player.sprite.getPosition() + player.dir*5.0f);
+    
+    
+    player.hitboxFront = sf::CircleShape(25);
+    player.hitboxFront.setPosition(player.sprite.getPosition().x, player.sprite.getPosition().y + 10);
+    player.hitboxFront.setOrigin(25,25);
+    player.hitboxFront.setScale(0.7, 1);
 }
 
 void RecalculateAngles(Player& player)
@@ -32,8 +34,11 @@ void PlayerPressedSpace(Player& player, float deltaTime)
     std::cout << player.projManager.chrono << std::endl;
     RecalculateAngles(player);
     if (player.projManager.chrono > player.projManager.timeBtw) {
-        AddProjectileToGame(player.projManager, player.dir, 400, 10,1);
+        AddProjectileToGame(player.projManager, player.dir, 500, 5,1);
     }
+}
+void PlayerPressedE(Player& player) {
+    player.returntome = true;
 }
 
 void UpdatePlayer(Player& player, float deltaTime,sf::Vector2f size)
@@ -43,13 +48,13 @@ void UpdatePlayer(Player& player, float deltaTime,sf::Vector2f size)
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
         //printf("Rotate Right \n");
         player.sprite.setRotation(player.sprite.getRotation() - player.rotateSpeed * deltaTime);
-        player.hitbox.setRotation(player.sprite.getRotation());
+        player.hitboxFront.setRotation(player.sprite.getRotation());
 
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
         //printf("Rotate left \n");
         player.sprite.setRotation(player.sprite.getRotation() + player.rotateSpeed * deltaTime);
-        player.hitbox.setRotation(player.sprite.getRotation());
+        player.hitboxFront.setRotation(player.sprite.getRotation());
 
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
@@ -66,7 +71,7 @@ void UpdatePlayer(Player& player, float deltaTime,sf::Vector2f size)
         }
         //std::cout << player.speed << std::endl;
         player.sprite.setPosition(pos.x + player.dir.x * player.speed * deltaTime, pos.y + player.dir.y * player.speed * deltaTime);
-        player.hitbox.setRotation(player.sprite.getRotation());
+        player.hitboxFront.setRotation(player.sprite.getRotation());
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
         //printf("Move Backward \n");
@@ -105,41 +110,41 @@ void UpdatePlayer(Player& player, float deltaTime,sf::Vector2f size)
 
         }
     }
-    player.hitbox.setPosition(player.sprite.getPosition());
-    UpdateProjectile(player.projManager, deltaTime,size);
+    player.hitboxFront.setPosition(player.sprite.getPosition());
+    UpdateProjectile(player.projManager, deltaTime,size, player);
 }
 
 void PlayerDraw(Player& player, sf::RenderWindow& window)
 {
-    window.draw(player.hitbox);
+    window.draw(player.hitboxFront);
     window.draw(player.sprite);
     DrawProjectile(player.projManager, window);
     sf::Vector2f tempPos = player.sprite.getPosition();
 
     if (player.outWidth && player.sprite.getPosition().x > window.getSize().x*0.001f) {
         player.sprite.setPosition(tempPos.x - window.getSize().x, tempPos.y);
-        player.hitbox.setPosition(tempPos.x - window.getSize().x, tempPos.y);
+        player.hitboxFront.setPosition(tempPos.x - window.getSize().x, tempPos.y);
         window.draw(player.sprite);
-        window.draw(player.hitbox);
+        window.draw(player.hitboxFront);
  
     }
     if (player.outWidth && player.sprite.getPosition().x < window.getSize().x*0.001f) {
         player.sprite.setPosition(tempPos.x + window.getSize().x, tempPos.y);
-        player.hitbox.setPosition(tempPos.x + window.getSize().x, tempPos.y);
+        player.hitboxFront.setPosition(tempPos.x + window.getSize().x, tempPos.y);
         window.draw(player.sprite);
-        window.draw(player.hitbox);
+        window.draw(player.hitboxFront);
     }
     if (player.outHeight && player.sprite.getPosition().y > window.getSize().y*0.001f) {
         player.sprite.setPosition(tempPos.x, tempPos.y - window.getSize().y);
-        player.hitbox.setPosition(tempPos.x, tempPos.y - window.getSize().y);
+        player.hitboxFront.setPosition(tempPos.x, tempPos.y - window.getSize().y);
         window.draw(player.sprite);
-        window.draw(player.hitbox);
+        window.draw(player.hitboxFront);
     }
     if (player.outHeight && player.sprite.getPosition().y < window.getSize().y*0.001f) {
         player.sprite.setPosition(tempPos.x, tempPos.y + window.getSize().y);
-        player.hitbox.setPosition(tempPos.x, tempPos.y + window.getSize().y);
+        player.hitboxFront.setPosition(tempPos.x, tempPos.y + window.getSize().y);
         window.draw(player.sprite);
-        window.draw(player.hitbox);
+        window.draw(player.hitboxFront);
     }
     
 }
