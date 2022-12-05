@@ -87,7 +87,7 @@ void UpdateEnemy(EnemyManager& enemies, float deltaTime,sf::Vector2f size,Player
             }
             if ((*it).enemyShape.getPosition().y <= (*it).enemyShape.getRadius() || (*it).enemyShape.getPosition().y >= size.y - (*it).enemyShape.getRadius()) {
                 (*it).dir.y = -(*it).dir.y;
-                std::cout << (*it).dir.x << (*it).dir.y << std::endl;
+                //std::cout << (*it).dir.x << (*it).dir.y << std::endl;
             }
             sf::Vector2f norm = Normalize((*it).dir);
             (*it).enemyShape.setPosition((*it).enemyShape.getPosition().x + norm.x * (*it).speed * deltaTime, (*it).enemyShape.getPosition().y + norm.y * (*it).speed * deltaTime);

@@ -55,13 +55,15 @@ void UpdateProjectile(ProjectileManager& projManager, float deltaTime, sf::Vecto
 
 				if (norm <= (*it).shape.getRadius() + player.hitboxFront.getRadius()) {
 					it = projManager.projectiles.erase(it);
-					std::cout << "ERASE \n";
+					//std::cout << "ERASE \n";
 				}else {
 					it++; 
 				}
 			}
 			if (player.projManager.projectiles.size() == 0) {
 				player.returntome = false;
+				player.MaxSpeed = 45;
+
 			}
 		}
 	}
