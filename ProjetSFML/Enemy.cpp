@@ -5,6 +5,7 @@
 EnemyManager CreateEnemyManager(float timeBtw, sf::Vector2f position, float chrono)
 {
     EnemyManager enemymanager{ timeBtw,position,chrono };
+    enemymanager.system = CreateParticleSystem(0.2f, 10, 10, 10);
     return enemymanager;
 }
 
@@ -87,7 +88,7 @@ void UpdateEnemy(EnemyManager& enemies, float deltaTime,sf::Vector2f size,Player
             }
             if ((*it).enemyShape.getPosition().y <= (*it).enemyShape.getRadius() || (*it).enemyShape.getPosition().y >= size.y - (*it).enemyShape.getRadius()) {
                 (*it).dir.y = -(*it).dir.y;
-                //std::cout << (*it).dir.x << (*it).dir.y << std::endl;
+                std::cout << (*it).dir.x << (*it).dir.y << std::endl;
             }
             sf::Vector2f norm = Normalize((*it).dir);
             (*it).enemyShape.setPosition((*it).enemyShape.getPosition().x + norm.x * (*it).speed * deltaTime, (*it).enemyShape.getPosition().y + norm.y * (*it).speed * deltaTime);
@@ -109,6 +110,8 @@ void UpdateEnemy(EnemyManager& enemies, float deltaTime,sf::Vector2f size,Player
             }
 
             if ((*it).life < 3) {
+                enemies.system.chrono2 = 0;
+                enemies.system.origine = (*it).enemyShape.getPosition();
                 it = enemies.enemies.erase(it);
             }
             if (it != enemies.enemies.end()) {
@@ -116,6 +119,7 @@ void UpdateEnemy(EnemyManager& enemies, float deltaTime,sf::Vector2f size,Player
             }
         }
     }
+    UpdateParticleSystem(enemies.system, deltaTime);
     enemies.chrono += deltaTime;
 }
 void EnemyDraw(EnemyManager& enemies, sf::RenderWindow& window)
@@ -127,4 +131,5 @@ void EnemyDraw(EnemyManager& enemies, sf::RenderWindow& window)
             it++;
         }
     }
+    DrawParticleSystem(enemies.system,window);
 }
