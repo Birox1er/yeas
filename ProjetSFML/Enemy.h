@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 #include <math.h>
 #include "Projectile.h"
+#include "Particules.h"
 
 struct Player;
 
@@ -17,13 +18,13 @@ struct Enemy
 	sf::Vector2f dir;
 	sf::Sprite sprite;
 	sf::Texture texture;
-
 };
 
 struct EnemyManager {
 	float timeBtw;
 	sf::Vector2f position;
 	float chrono;
+	ParticleSystem system;
 	std::list<Enemy> enemies ;
 };
 
