@@ -10,46 +10,47 @@ int main()
     std::srand(time(nullptr));
     sf::RenderWindow window(sf::VideoMode(1000, 800), "UwU : Ultra Warn Universe");
     // Initialise everything below
-    //player.triangle = sf::CircleShape (30,3);
     sf::Clock mainClock;
     float deltaTime;
-   
-    #pragma region Initialisation
     Game game;
     InitGame(game, { window.getSize().x * 0.5f,window.getSize().y * 0.5f }, (sf::Vector2f)window.getSize());
-
-    #pragma endregion
-
-
+    #pragma region MyRegion
     ///FOREGROUND CATHODIC TV
     sf::Texture bgtext;
-    bgtext.loadFromFile("../Sprites/aaa.jpg");
+    bgtext.loadFromFile("Sprites/Effects.png");
     sf::Sprite bg;
     bg.setTexture(bgtext);
-
-
+#pragma endregion Background
     // Game loop
     while (window.isOpen()) {
         sf::Event event;
         deltaTime = mainClock.restart().asSeconds();
         while (window.pollEvent(event)) {
             // Process any input event here
-            
+
             if (event.type == sf::Event::Closed) {
                 window.close();
+            }
+            if (event.type == sf::Event::KeyPressed) {
+                if (event.key.code == sf::Keyboard::Space) {
+                    //std::cout << "ayayo";
+                    PressedSpace(game, deltaTime);
+                }
+                if (event.key.code == sf::Keyboard::E) {
+                    PressedE(game);
+                }
             }
         }
         GameUpdate(game, deltaTime);
         window.clear();
-        // Whatever I want to draw goes here
-        
-        //window.draw(bg);
+
+        window.draw(bg);
         GameDraw(game, window);
+
         window.display();
     }
-
+    //I'll try Save Here 
 }
-
 // Exécuter le programme : Ctrl+F5 ou menu Déboguer > Exécuter sans débogage
 // Déboguer le programme : F5 ou menu Déboguer > Démarrer le débogage
 

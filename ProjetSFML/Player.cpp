@@ -2,8 +2,8 @@
 
 void InitPlayer(Player& player, sf::Vector2f position)
 {
-    player.texture.loadFromFile("../Sprites/Player.png");
-    if (!player.texture.loadFromFile("../Sprites/Player.png")) {
+    player.texture.loadFromFile("Sprites/Player.png");
+    if (!player.texture.loadFromFile("Sprites/Player.png")) {
         std::cout << "failed to load Texture" << std::endl;
     }
     player.sprite.setTexture(player.texture);
@@ -12,11 +12,15 @@ void InitPlayer(Player& player, sf::Vector2f position)
     //Set pos to middle screen
     player.sprite.setPosition(position.x+11/2, position.y+11 / 2);
     //oui elle est grande l'image
-    player.sprite.setScale(.2f, .2f);
-
-    player.hitbox.setPosition(player.sprite.getPosition());
-    player.hitbox.setOrigin(33,33);
-
+    player.sprite.setScale(.15f, .15f);
+    RecalculateAngles(player);
+    player.projManager = CreateProjectileManager(0, 0, player.sprite.getPosition() + player.dir*5.0f);
+    
+    
+    player.hitboxFront = sf::CircleShape(25);
+    player.hitboxFront.setPosition(player.sprite.getPosition().x, player.sprite.getPosition().y + 10);
+    player.hitboxFront.setOrigin(25,25);
+    player.hitboxFront.setScale(0.7, 1);
 }
 
 void RecalculateAngles(Player& player)
@@ -25,15 +29,34 @@ void RecalculateAngles(Player& player)
     player.dir.y = 10 * -cos(player.sprite.getRotation() * (3.141592653589793 / 180));
 }
 
-void UpdatePlayer(Player& player, float deltaTime)
+void PlayerPressedSpace(Player& player, float deltaTime)
 {
+    std::cout << player.projManager.chrono << std::endl;
+    RecalculateAngles(player);
+    if (player.projManager.chrono > player.projManager.timeBtw) {
+        AddProjectileToGame(player.projManager, player.dir, 500, 5,1);
+    }
+}
+void PlayerPressedE(Player& player) {
+    player.returntome = true;
+    player.MaxSpeed = 25;
+}
+
+void UpdatePlayer(Player& player, float deltaTime,sf::Vector2f size)
+{
+    RecalculateAngles(player);
+    player.projManager.position = player.sprite.getPosition() + player.dir*5.0f;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
         //printf("Rotate Right \n");
         player.sprite.setRotation(player.sprite.getRotation() - player.rotateSpeed * deltaTime);
+        player.hitboxFront.setRotation(player.sprite.getRotation());
+
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
         //printf("Rotate left \n");
         player.sprite.setRotation(player.sprite.getRotation() + player.rotateSpeed * deltaTime);
+        player.hitboxFront.setRotation(player.sprite.getRotation());
+
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
         //printf("Move Forward \n");
@@ -47,8 +70,9 @@ void UpdatePlayer(Player& player, float deltaTime)
         if (player.speed > player.MaxSpeed) {
             player.speed = player.MaxSpeed;
         }
-        std::cout << player.speed << std::endl;
+        //std::cout << player.speed << std::endl;
         player.sprite.setPosition(pos.x + player.dir.x * player.speed * deltaTime, pos.y + player.dir.y * player.speed * deltaTime);
+        player.hitboxFront.setRotation(player.sprite.getRotation());
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)) {
         //printf("Move Backward \n");
@@ -67,7 +91,7 @@ void UpdatePlayer(Player& player, float deltaTime)
         if (player.speed < 0) {
             player.speed = 0;
         }
-        std::cout << player.speed << std::endl;
+        //std::cout << player.speed << std::endl;
         player.sprite.move(player.dir.x * -player.speed * deltaTime * 1.5, player.dir.y * -player.speed * deltaTime * 1.5);
     }
     if (!sf::Keyboard::isKeyPressed(sf::Keyboard::Z) && !(sf::Keyboard::isKeyPressed(sf::Keyboard::S))) {
@@ -79,74 +103,79 @@ void UpdatePlayer(Player& player, float deltaTime)
             else if (player.wasS) {
                 player.sprite.move(player.dir.x * -player.speed * deltaTime, player.dir.y * -player.speed * deltaTime);
             }
-            std::cout << player.speed << std::endl;
+            //std::cout << player.speed << std::endl;
         }
         else if (player.speed < 0) {
             player.speed = 0;
-            std::cout << player.speed << std::endl;
+            //std::cout << "Player speed is : " << player.speed << std::endl;
 
         }
     }
-    player.hitbox.setPosition(player.sprite.getPosition());
+
+    std::list<Projectile>::iterator it = player.projManager.projectiles.begin();
+    while (it != player.projManager.projectiles.end()) {
+        sf::Vector2f distance = player.hitboxFront.getPosition() - (*it).shape.getPosition();
+        if (Norm(distance) <= player.hitboxFront.getRadius() + (*it).shape.getRadius() && (*it).IsEnemy && (*it).canHit) {
+            //player.life -= 1;
+            it = player.projManager.projectiles.erase(it);
+            std::cout << player.life << std::endl;
+        }
+        else {
+            it++;
+        }
+    }
+    switch (player.life)
+    {
+    case(3):
+        player.texture.loadFromFile("Sprites/Player.png");
+        break;
+    case(2):
+        player.texture.loadFromFile("Sprites/Player_2.png");
+        break;
+    case(1):
+        player.texture.loadFromFile("Sprites/Player_3.png");
+        break;
+    }
+    
+    player.hitboxFront.setPosition(player.sprite.getPosition());
+    UpdateProjectile(player.projManager, deltaTime,size, player);
 }
 
 void PlayerDraw(Player& player, sf::RenderWindow& window)
 {
-    window.draw(player.hitbox);
-    window.draw(player.sprite);
-
-    sf::Vector2f tempPos = player.sprite.getPosition();
-
-    if (player.outWidth && player.sprite.getPosition().x > window.getSize().x*0.5f) {
-        player.sprite.setPosition(tempPos.x - window.getSize().x, tempPos.y);
-        player.hitbox.setPosition(tempPos.x - window.getSize().x, tempPos.y);
+    if (player.life > 0) {
+        //window.draw(player.hitboxFront);
         window.draw(player.sprite);
-        //window.draw(player.hitbox);
-        //player.hitbox.setPosition(tempPos.x, tempPos.y);
-        //player.sprite.setPosition(tempPos.x, tempPos.y);
-    }
-    if (player.outWidth && player.sprite.getPosition().x < window.getSize().x*0.5) {
-        player.sprite.setPosition(tempPos.x + window.getSize().x, tempPos.y);
-        player.hitbox.setPosition(tempPos.x + window.getSize().x, tempPos.y);
-        window.draw(player.sprite);
-        //window.draw(player.hitbox);
-        //player.hitbox.setPosition(tempPos.x, tempPos.y);
-        //player.sprite.setPosition(tempPos.x, tempPos.y);
-    }
-    if (player.outHeight && player.sprite.getPosition().y > window.getSize().y*0.5) {
-        player.sprite.setPosition(tempPos.x, tempPos.y - window.getSize().y);
-        player.hitbox.setPosition(tempPos.x, tempPos.y - window.getSize().y);
-        window.draw(player.sprite);
-        //window.draw(player.hitbox);
-        //player.hitbox.setPosition(tempPos.x, tempPos.y);
-        //player.sprite.setPosition(tempPos.x, tempPos.y);
-    }
-    if (player.outHeight && player.sprite.getPosition().y < window.getSize().y*0.5) {
-        player.sprite.setPosition(tempPos.x, tempPos.y + window.getSize().y);
-        player.hitbox.setPosition(tempPos.x, tempPos.y + window.getSize().y);
-        window.draw(player.sprite);
-        //window.draw(player.hitbox);
-        //player.hitbox.setPosition(tempPos.x, tempPos.y);
-        //player.sprite.setPosition(tempPos.x, tempPos.y);
-    }
-    player.hitbox.setPosition(tempPos.x, tempPos.y);
-    player.sprite.setPosition(tempPos.x, tempPos.y);
+        DrawProjectile(player.projManager, window);
+        sf::Vector2f tempPos = player.sprite.getPosition();
 
-    if (player.outWidth && player.hitbox.getPosition().x > window.getSize().x) {
-        player.hitbox.setPosition(tempPos.x - window.getSize().x, tempPos.y);
-        window.draw(player.hitbox);
-    }
-    if (player.outWidth && player.hitbox.getPosition().x < 0) {
-        player.hitbox.setPosition(tempPos.x - window.getSize().x, tempPos.y);
-        window.draw(player.hitbox);
-    }
-    if (player.outHeight && player.hitbox.getPosition().y > 0) {
-        player.hitbox.setPosition(tempPos.x, tempPos.y - window.getSize().y);
-        window.draw(player.hitbox);
+        if (player.outWidth && player.sprite.getPosition().x > window.getSize().x * 0.001f) {
+            player.sprite.setPosition(tempPos.x - window.getSize().x, tempPos.y);
+            player.hitboxFront.setPosition(tempPos.x - window.getSize().x, tempPos.y);
+            window.draw(player.sprite);
+            //window.draw(player.hitboxFront);
 
+        }
+        if (player.outWidth && player.sprite.getPosition().x < window.getSize().x * 0.001f) {
+            player.sprite.setPosition(tempPos.x + window.getSize().x, tempPos.y);
+            player.hitboxFront.setPosition(tempPos.x + window.getSize().x, tempPos.y);
+            window.draw(player.sprite);
+            //window.draw(player.hitboxFront);
+        }
+        if (player.outHeight && player.sprite.getPosition().y > window.getSize().y * 0.001f) {
+            player.sprite.setPosition(tempPos.x, tempPos.y - window.getSize().y);
+            player.hitboxFront.setPosition(tempPos.x, tempPos.y - window.getSize().y);
+            window.draw(player.sprite);
+            //window.draw(player.hitboxFront);
+        }
+        if (player.outHeight && player.sprite.getPosition().y < window.getSize().y * 0.001f) {
+            player.sprite.setPosition(tempPos.x, tempPos.y + window.getSize().y);
+            player.hitboxFront.setPosition(tempPos.x, tempPos.y + window.getSize().y);
+            window.draw(player.sprite);
+            //window.draw(player.hitboxFront);
+        }
     }
-    if (player.outHeight && player.hitbox.getPosition().y < window.getSize().y) {
-        player.hitbox.setPosition(tempPos.x, tempPos.y - window.getSize().y);
-        window.draw(player.hitbox);
-    }
+    
+    
+    
 }

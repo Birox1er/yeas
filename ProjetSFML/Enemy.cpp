@@ -1,14 +1,21 @@
 #include "Enemy.h"
 #include "Player.h"
+#include "Projectile.h"
 
-Enemy GenerateEnemyAndCreate(int windoSizeX, int windoSizeY, Player& player)
+EnemyManager CreateEnemyManager(float timeBtw, sf::Vector2f position, float chrono)
+{
+    EnemyManager enemymanager{ timeBtw,position,chrono };
+    return enemymanager;
+}
+
+void GenerateEnemyAndCreate(EnemyManager& enemyManager, int windoSizeX, int windoSizeY, Player& player)
 {
 
     int seed = rand()% 100;
     std::cout << seed << std::endl;
     sf::Vector2f pos;
-    pos.x = rand() % windoSizeX;
-    pos.y = rand() % windoSizeY;
+    pos.x = (rand() % (windoSizeX-200))+100;
+    pos.y = (rand() % (windoSizeY-200))+100;
     int baseSpeed = 500;
     int speed;
     int life;
@@ -44,30 +51,80 @@ Enemy GenerateEnemyAndCreate(int windoSizeX, int windoSizeY, Player& player)
     speed = baseSpeed / life;
     size = life;
     Enemy en = CreateEnemy(speed, life, pos, size, player);
-    return en;
+    enemyManager.enemies.push_back(en);
 }
 
 Enemy CreateEnemy(int speed, int life, sf::Vector2f origine,int size, Player& player)
 {
+
     sf::CircleShape enemyShape(size*10, life);
-    enemyShape.setOrigin(size, size);
+    enemyShape.setOrigin(size*10, size*10);
     enemyShape.setPosition(origine);
+    enemyShape.setFillColor(sf::Color::Black);
+    enemyShape.setOutlineColor(sf::Color::White);
+    enemyShape.setOutlineThickness(.7f);
     sf::Vector2f direction = (origine - player.sprite.getPosition());
     sf::Vector2f position = origine;
     Enemy enemy{ 100,speed,life,size,enemyShape,origine,position,direction};
 
     return enemy;
 }
-void UpdateEnemy(Enemy& enemy, float deltaTime) {
-
-    enemy.enemyShape.move(Normalize(enemy.dir) * -deltaTime * (float)enemy.speed);
-}
-void EnemyDraw(Enemy& enemy, sf::RenderWindow& window)
-{
-    window.draw(enemy.enemyShape);
-}
-sf::Vector2f Normalize(sf::Vector2f vector) {
-    float norme = sqrt(vector.x * vector.x + vector.y * vector.y);
+void UpdateEnemy(EnemyManager& enemies, float deltaTime,sf::Vector2f size,Player& player) {
     
-    return sf::Vector2f(vector.x/norme, vector.y/norme);
+    if (enemies.chrono >= enemies.timeBtw) {
+        enemies.chrono = 0;
+        GenerateEnemyAndCreate(enemies, size.x, size.y, player);
+    }
+    if (enemies.enemies.size()> 0) {
+        std::list<Enemy>::iterator it = enemies.enemies.begin();
+        while (it != enemies.enemies.end()) {
+            
+            (*it).enemyShape.setPointCount((*it).life);
+            (*it).enemyShape.setRadius((*it).life * 10);
+            (*it).enemyShape.setOrigin((*it).enemyShape.getRadius(), (*it).enemyShape.getRadius());
+            if ((*it).enemyShape.getPosition().x <= (*it).enemyShape.getRadius() || (*it).enemyShape.getPosition().x >= size.x - (*it).enemyShape.getRadius()) {
+                (*it).dir.x = -(*it).dir.x;
+            }
+            if ((*it).enemyShape.getPosition().y <= (*it).enemyShape.getRadius() || (*it).enemyShape.getPosition().y >= size.y - (*it).enemyShape.getRadius()) {
+                (*it).dir.y = -(*it).dir.y;
+                //std::cout << (*it).dir.x << (*it).dir.y << std::endl;
+            }
+            sf::Vector2f norm = Normalize((*it).dir);
+            (*it).enemyShape.setPosition((*it).enemyShape.getPosition().x + norm.x * (*it).speed * deltaTime, (*it).enemyShape.getPosition().y + norm.y * (*it).speed * deltaTime);
+            std::list<Projectile>::iterator it2 = player.projManager.projectiles.begin();
+            while (it2 != player.projManager.projectiles.end()) {
+                sf::Vector2f distance = (*it).enemyShape.getPosition() - (*it2).shape.getPosition();
+                if (Norm(distance) <= (*it).enemyShape.getRadius() + (*it2).shape.getRadius() && (*it2).IsEnemy == false) {
+                        (*it).life -= 1;
+                        (*it2).direction = (*it2).direction - distance;
+                        (*it2).IsEnemy = true;
+                }
+                it2++;
+            }
+
+            sf::Vector2f distance2 = (*it).enemyShape.getPosition() - player.hitboxFront.getPosition();
+            if (Norm(distance2) <= (*it).enemyShape.getRadius() + player.hitboxFront.getRadius()) {
+                player.life -= 1;
+                (*it).life = 2;
+            }
+
+            if ((*it).life < 3) {
+                it = enemies.enemies.erase(it);
+            }
+            if (it != enemies.enemies.end()) {
+                it++;
+            }
+        }
+    }
+    enemies.chrono += deltaTime;
+}
+void EnemyDraw(EnemyManager& enemies, sf::RenderWindow& window)
+{
+    if (enemies.enemies.size() > 0) {
+        std::list<Enemy>::iterator it = enemies.enemies.begin();
+        while (it != enemies.enemies.end()) {
+            window.draw((*it).enemyShape);
+            it++;
+        }
+    }
 }

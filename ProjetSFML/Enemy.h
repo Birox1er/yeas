@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include <math.h>
+#include "Projectile.h"
 
 struct Player;
 
@@ -19,10 +20,15 @@ struct Enemy
 
 };
 
-Enemy GenerateEnemyAndCreate(int windoSizeX, int windoSizeY, Player& player);
+struct EnemyManager {
+	float timeBtw;
+	sf::Vector2f position;
+	float chrono;
+	std::list<Enemy> enemies ;
+};
+
+EnemyManager CreateEnemyManager(float timeBtw, sf::Vector2f position, float chrono);
+void GenerateEnemyAndCreate(EnemyManager& enemymanager,int windoSizeX, int windoSizeY, Player& player);
 Enemy CreateEnemy(int speed, int life, sf::Vector2f origine, int size, Player& player);
-
-void UpdateEnemy(Enemy& enemy, float deltaTime);
-void EnemyDraw(Enemy& enemy, sf::RenderWindow& window);
-
-sf::Vector2f Normalize(sf::Vector2f vector);
+void UpdateEnemy(EnemyManager& enemies, float deltaTime,sf::Vector2f size, Player& player);
+void EnemyDraw(EnemyManager& enemies, sf::RenderWindow& window);
