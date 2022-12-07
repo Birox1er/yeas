@@ -8,30 +8,34 @@ void AddShapeToTrail(TrailManager& trail, sf::Vector2f position)
 	trail.trailPoints.push_front(circle);
 }
 
-void UpdateTrail(TrailManager& trail, float speed, sf::Vector2f position)
+void UpdateTrail(TrailManager& trail, float speed, sf::Vector2f position, bool oui)
 {
 	trail.length = (int)speed;
 	AddShapeToTrail(trail, position);
 	std::list<sf::CircleShape>::iterator it = trail.trailPoints.begin();
 	int i = 0;
-	sf::Color col = sf::Color::Color(255,0,0,255);
+	sf::Color col = sf::Color::Color(0,0,0,255);
 	while (it != trail.trailPoints.end()) {
-		float k = ((float)i / (float)trail.trailPoints.size())*3;
-		if (k < 1) {
-			col.r = Lerp(col.r, col.g, k);
-			col.g = Lerp(col.g, col.r, k);
+		if (oui) {
+			float k = ((float)i / (float)trail.trailPoints.size()) * 6;
+			int startCol = (int)k;
+			if (startCol == 6) {
+				startCol--;
+			}
+			float t = k - startCol;
+			sf::Color c1 = trail.colors[startCol];
+			sf::Color c2 = trail.colors[startCol + 1];
+			col.r = Lerp(c1.r, c2.r, t);
+			col.g = Lerp(c1.g, c2.g, t);
+			col.b = Lerp(c1.b, c2.b, t);
+
+			if (speed / 45 * .9f)
+				(*it).setFillColor(col);
 		}
-		if (k < 2) {
-			k -= 1;
-			col.g = Lerp(col.g, col.b, k);
-			col.b = Lerp(col.b, col.g, k);
+		else {
+			(*it).setFillColor(sf::Color::White);
 		}
-		if (k < 3) {
-			k -= 2;
-			col.b = Lerp(col.b, col.r, k);
-			col.r = Lerp(col.r, col.g, k);
-		}
-		(*it).setFillColor(col);
+		
 		if (i > trail.length * 2) {
 			(*it).setRadius((*it).getRadius() - 0.1);
 		}

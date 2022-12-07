@@ -52,7 +52,7 @@ void PlayerPressedE(Player& player) {
 void UpdatePlayer(Player& player, float deltaTime,sf::Vector2f size)
 {
     RecalculateAngles(player);
-    UpdateTrail(player.trail, player.speed, player.sprite.getPosition() - player.dir * 3.0f);
+    UpdateTrail(player.trail, player.speed, player.sprite.getPosition() - player.dir * 3.0f, player.isSheidOn);
     player.projManager.position = player.sprite.getPosition() + player.dir*5.0f;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
         //printf("Rotate Right \n");
