@@ -7,8 +7,37 @@
 #include "Enemy.h"
 int main()
 {
+    int WindowsX = 1000;
+    int WindowsY = 800;
+#pragma region MENU
+    start:
+    int rep = 0;
+    std::cout << "UwU : Ultra Warm Universe !\n\n 1 : Jouer \n 2 : Option \n 3 : Quitter \n\n";
+    std::cout << "Reponse : ";
+    std::cin >> rep;
+    if (rep == 1) {
+        std::cout << "START !";
+    }
+    else if (rep == 2) {
+        int rep2 = 0;
+        std::cout << "\nOPTION\n\n 1 : Retour \n 2 : Window Size \n";
+        std::cin >> rep2;
+        if (rep2 == 1) {
+            goto start;
+        }
+        else if (rep2 == 2) {
+            std::cout << "Default : 1000x 800y\n";
+            std::cout << "Windows X :";
+            std::cin >> WindowsX;
+            std::cout << "Windows Y :";
+            std::cin >> WindowsY;
+            goto start;
+        }
+
+    }
+#pragma endregion 
     std::srand(time(nullptr));
-    sf::RenderWindow window(sf::VideoMode(1000, 800), "UwU : Ultra Warn Universe");
+    sf::RenderWindow window(sf::VideoMode(WindowsX, WindowsY), "UwU : Ultra Warn Universe");
     // Initialise everything below
     sf::Clock mainClock;
     float deltaTime;
