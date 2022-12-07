@@ -132,7 +132,7 @@ void UpdatePlayer(Player& player, float deltaTime,sf::Vector2f size)
     case(2):
         player.texture.loadFromFile("Sprites/Player_2.png");
         break;
-    case(1):
+    case(1):     
         player.texture.loadFromFile("Sprites/Player_3.png");
         break;
     }
@@ -147,8 +147,18 @@ void PlayerDraw(Player& player, sf::RenderWindow& window)
         //window.draw(player.hitboxFront);
         window.draw(player.sprite);
         DrawProjectile(player.projManager, window);
+        //sf::Font font;
+        //font.loadFromFile("Sprites/Mintage.ttf");
+        //sf::Text lifetxt;
+        //std::string t = player.life.toString();
+        //lifetxt.setString(t);
+        //lifetxt.setFont(font);
+        //lifetxt.setFillColor(sf::Color::Blue);
+        //lifetxt.setPosition(window.getSize().x / 2, window.getSize().y / 2);
+        //lifetxt.setCharacterSize(42);
+        //window.draw(lifetxt);
+        
         sf::Vector2f tempPos = player.sprite.getPosition();
-
         if (player.outWidth && player.sprite.getPosition().x > window.getSize().x * 0.001f) {
             player.sprite.setPosition(tempPos.x - window.getSize().x, tempPos.y);
             player.hitboxFront.setPosition(tempPos.x - window.getSize().x, tempPos.y);
@@ -174,6 +184,9 @@ void PlayerDraw(Player& player, sf::RenderWindow& window)
             window.draw(player.sprite);
             //window.draw(player.hitboxFront);
         }
+    }
+    else {
+        window.close();
     }
     
     
