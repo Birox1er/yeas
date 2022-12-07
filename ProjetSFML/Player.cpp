@@ -8,11 +8,18 @@ void InitPlayer(Player& player, sf::Vector2f position)
     }
     player.sprite.setTexture(player.texture);
     player.sprite.setOrigin(player.texture.getSize().x / 2, player.texture.getSize().y / 2);
-
-    //Set pos to middle screen
-    player.sprite.setPosition(position.x+11/2, position.y+11 / 2);
-    //oui elle est grande l'image
     player.sprite.setScale(.15f, .15f);
+    player.sprite.setPosition(position.x, position.y);
+
+    player.Texturesheild.loadFromFile("Sprites/heatSheild.png");
+    if (!player.texture.loadFromFile("Sprites/heatSheild.png")) {
+        std::cout << "failed to load Texture" << std::endl;
+    }
+    player.spritesheild.setTexture(player.Texturesheild);
+    player.spritesheild.setOrigin(player.Texturesheild.getSize().x / 2, player.Texturesheild.getSize().y / 2);
+    player.spritesheild.setScale(.15f, .15f);
+    player.spritesheild.setPosition(player.sprite.getPosition().x, player.sprite.getPosition().y + 10);
+
     RecalculateAngles(player);
     player.projManager = CreateProjectileManager(0, 0, player.sprite.getPosition() + player.dir*5.0f);
     
@@ -136,7 +143,8 @@ void UpdatePlayer(Player& player, float deltaTime,sf::Vector2f size)
         player.texture.loadFromFile("Sprites/Player_3.png");
         break;
     }
-    
+    player.spritesheild.setRotation(player.sprite.getRotation());
+    player.spritesheild.setPosition(player.sprite.getPosition() + player.dir * 3.5f);
     player.hitboxFront.setPosition(player.sprite.getPosition());
     UpdateProjectile(player.projManager, deltaTime,size, player);
 }
@@ -145,6 +153,13 @@ void PlayerDraw(Player& player, sf::RenderWindow& window)
 {
     if (player.life > 0) {
         //window.draw(player.hitboxFront);
+        if (player.speed >= player.MaxSpeed * .9f && !player.returntome && player.canSheildBeOn) {
+            player.isSheidOn = true;
+            window.draw(player.spritesheild);
+        }
+        else {
+            player.isSheidOn = false;
+        }
         window.draw(player.sprite);
         DrawProjectile(player.projManager, window);
         //sf::Font font;

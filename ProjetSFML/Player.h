@@ -9,6 +9,11 @@ struct Player
 	sf::Sprite sprite;
 	sf::Texture texture;
 
+	sf::Sprite spritesheild;
+	sf::Texture Texturesheild;
+	bool isSheidOn = false;
+	bool canSheildBeOn = true;
+
 	sf::CircleShape hitboxFront;
 
 

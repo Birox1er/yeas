@@ -95,7 +95,7 @@ void UpdateEnemy(EnemyManager& enemies, float deltaTime,sf::Vector2f size,Player
             std::list<Projectile>::iterator it2 = player.projManager.projectiles.begin();
             while (it2 != player.projManager.projectiles.end()) {
                 sf::Vector2f distance = (*it).enemyShape.getPosition() - (*it2).shape.getPosition();
-                if (Norm(distance) <= (*it).enemyShape.getRadius() + (*it2).shape.getRadius() && (*it2).IsEnemy == false) {
+                if (Norm(distance) <= (*it).enemyShape.getRadius() + (*it2).shape.getRadius() && (*it2).IsEnemy == false && (*it2).canHit == true) {
                         (*it).life -= 1;
                         (*it2).direction = (*it2).direction - distance;
                         (*it2).IsEnemy = true;
@@ -106,7 +106,13 @@ void UpdateEnemy(EnemyManager& enemies, float deltaTime,sf::Vector2f size,Player
             sf::Vector2f distance2 = (*it).enemyShape.getPosition() - player.hitboxFront.getPosition();
             if (Norm(distance2) <= (*it).enemyShape.getRadius() + player.hitboxFront.getRadius()) {
                 player.life -= 1;
+                player.canSheildBeOn = true;
                 (*it).life = 2;
+            }
+            sf::Vector2f distance3 = (*it).enemyShape.getPosition() - player.spritesheild.getPosition();
+            if (Norm(distance3) <= (*it).enemyShape.getRadius() && player.isSheidOn) {
+                (*it).life = 0;
+                player.canSheildBeOn = false;
             }
 
             if ((*it).life < 3) {
