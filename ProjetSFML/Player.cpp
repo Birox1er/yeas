@@ -175,6 +175,9 @@ void PlayerDraw(Player& player, sf::RenderWindow& window)
             //window.draw(player.hitboxFront);
         }
     }
+    else {
+        window.close();
+    }
     
     
     

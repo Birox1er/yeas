@@ -35,6 +35,9 @@ int main()
         }
 
     }
+    else if (rep == 3) {
+        return 0;
+    }
 #pragma endregion 
     std::srand(time(nullptr));
     sf::RenderWindow window(sf::VideoMode(WindowsX, WindowsY), "UwU : Ultra Warn Universe");
@@ -78,6 +81,7 @@ int main()
 
         window.display();
     }
+    goto start;
     //I'll try Save Here 
 }
 // Exécuter le programme : Ctrl+F5 ou menu Déboguer > Exécuter sans débogage
