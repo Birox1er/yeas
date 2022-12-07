@@ -45,6 +45,7 @@ void PlayerPressedE(Player& player) {
 void UpdatePlayer(Player& player, float deltaTime,sf::Vector2f size)
 {
     RecalculateAngles(player);
+    UpdateTrail(player.trail, player.speed, player.sprite.getPosition() - player.dir * 3.0f);
     player.projManager.position = player.sprite.getPosition() + player.dir*5.0f;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
         //printf("Rotate Right \n");
@@ -116,7 +117,7 @@ void UpdatePlayer(Player& player, float deltaTime,sf::Vector2f size)
     while (it != player.projManager.projectiles.end()) {
         sf::Vector2f distance = player.hitboxFront.getPosition() - (*it).shape.getPosition();
         if (Norm(distance) <= player.hitboxFront.getRadius() + (*it).shape.getRadius() && (*it).IsEnemy && (*it).canHit) {
-            //player.life -= 1;
+            player.life -= 1;
             it = player.projManager.projectiles.erase(it);
             std::cout << player.life << std::endl;
         }
@@ -143,6 +144,7 @@ void UpdatePlayer(Player& player, float deltaTime,sf::Vector2f size)
 
 void PlayerDraw(Player& player, sf::RenderWindow& window)
 {
+    DrawTrail(player.trail, window);
     if (player.life > 0) {
         //window.draw(player.hitboxFront);
         window.draw(player.sprite);

@@ -3,7 +3,7 @@
 
 ParticleSystem CreateParticleSystem( float timeBtw, float rayonSpawn, float particleRadiusMax, float particleRadiusMin)
 {
-    ParticleSystem syst{0,1,timeBtw,rayonSpawn,particleRadiusMax,particleRadiusMin };
+    ParticleSystem syst{0,2,timeBtw,rayonSpawn,particleRadiusMax,particleRadiusMin };
     return syst;
 }
 
@@ -24,7 +24,6 @@ void AddParticleToSystem(ParticleSystem& particleSystem, float particleLifeTime,
     part.circle.setOutlineColor(sf::Color::White);
     part.circle.setOutlineThickness(.7f);
     particleSystem.particles.push_back(part);
-    std::cout << "created" << std::endl;
 }
 
 void UpdateParticleSystem(ParticleSystem& particleSystem, float deltaTime)
@@ -41,14 +40,13 @@ void UpdateParticleSystem(ParticleSystem& particleSystem, float deltaTime)
             (*it).circle.setPosition((*it).circle.getPosition() + (*it).dir * deltaTime);
             if ((*it).timeLeft <= 0) {
                 it = particleSystem.particles.erase(it);
-                std::cout << "died" << std::endl;
             }
             else {
                 it++;
             }
         }
     }
-    if (particleSystem.chrono > particleSystem.timeBtw&& particleSystem.chrono2<2) {
+    if (particleSystem.chrono > particleSystem.timeBtw&& particleSystem.chrono2<1) {
         AddParticleToSystem(particleSystem,2,particleSystem.origine);
         particleSystem.chrono = 0;
     }
