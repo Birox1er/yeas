@@ -40,7 +40,7 @@ int main()
 #pragma endregion 
     sf::RenderWindow MENU(sf::VideoMode(WindowsX, WindowsY), "UwU : Ultra Warn Universe - Menu");
     MainMenu mainMenu(MENU.getSize().x, MENU.getSize().y);
-
+    mainMenu.MoveDown();
     while (MENU.isOpen()) {
         sf::Event event;
         while (MENU.pollEvent(event)) {
@@ -49,19 +49,19 @@ int main()
             }
 
             if (event.type == sf::Event::KeyReleased) {
-                if (event.key.code == sf::Keyboard::Up) {
+                if (event.key.code == sf::Keyboard::Z || event.key.code == sf::Keyboard::W || event.key.code == sf::Keyboard::Up) {
                     mainMenu.MoveUp();
                     std::cout << "Up" << std::endl;
                     break;
                 }
 
-                if (event.key.code == sf::Keyboard::Down) {
+                if (event.key.code == sf::Keyboard::Down || event.key.code == sf::Keyboard::S) {
                     mainMenu.MoveDown();
                     std::cout << "Down" << std::endl;
                     break;
                 }
 
-                if (event.key.code == sf::Keyboard::Enter) {
+                if (event.key.code == sf::Keyboard::Enter || event.key.code == sf::Keyboard::Space) {
                     sf::RenderWindow window(sf::VideoMode(WindowsX, WindowsY), "UwU : Ultra Warn Universe");
                     sf::RenderWindow Options(sf::VideoMode(WindowsX, WindowsY), "Options");
 
