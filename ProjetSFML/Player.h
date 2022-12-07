@@ -3,6 +3,7 @@
 #include <vector>
 #include <iostream>
 #include "Projectile.h"
+#include "Trail.h"
 
 struct Player
 {
@@ -18,6 +19,7 @@ struct Player
 
 
 	ProjectileManager projManager;
+	TrailManager trail;
 
 	int life = 3;
 	int rotateSpeed = 150;
