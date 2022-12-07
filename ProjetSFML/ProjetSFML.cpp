@@ -1,5 +1,3 @@
-// ProjetSFML.cpp : Ce fichier contient la fonction 'main'. L'exécution du programme commence et se termine à cet endroit.
-//
 #define NOMINMAX 
 #include <windows.h>
 #include <math.h>
@@ -9,7 +7,7 @@ int main()
 {
     int WindowsX = 1000;
     int WindowsY = 800;
-#pragma region MENU
+    #pragma region MENU
     start:
     int rep = 0;
     std::cout << "UwU : Ultra Warm Universe !\n\n 1 : Jouer \n 2 : Option \n 3 : Quitter \n\n";
@@ -45,6 +43,7 @@ int main()
     sf::Clock mainClock;
     float deltaTime;
     Game game;
+    int score;
     InitGame(game, { window.getSize().x * 0.5f,window.getSize().y * 0.5f }, (sf::Vector2f)window.getSize());
     #pragma region MyRegion
     ///FOREGROUND CATHODIC TV
