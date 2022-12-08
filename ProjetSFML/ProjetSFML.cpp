@@ -4,6 +4,51 @@
 #include "Game.h"
 #include "Enemy.h"
 #include "MainMenu.h"
+
+/*sf::Sprite Fractale(int iterations, sf::RenderWindow& window)
+{
+    const unsigned numPixel = 800 * 1000;
+    sf::Image image;
+    sf::Sprite sprite;
+    sf::Texture texture;
+    sf::Uint8 pixels[4 * numPixel];
+    for (int i = 0; i < window.getSize().x; i++) {
+        for (int j = 0; j < window.getSize().y; j++) {
+            float cR = (j * 2.7f) / window.getSize().x - 2.1f;// on définit un cadre dans le quel on va voir notre fonction
+            float cI = (i * 2.4f) / window.getSize().y - 1.2f;
+            float zR = 0;
+            float zI = 0;
+            int k = 0;
+            do
+            {
+                double backup = zR;
+                zR = (zR * zR) - (zI * zI) + cR;
+                zI = 2 * zI * backup + cI;
+                k++;
+            } while (((zI * zI) + (zR * zR) < 4) && (k < iterations));
+                int g = k *255 / iterations;
+                int l = i + j * 4;
+            if (k == iterations)
+            {
+                 pixels[l] = 100;
+                 pixels[l+1] = 0;
+                 pixels[l+2] = 255;
+                 pixels[l + 3] = 255;
+            }
+            else {
+                pixels[l] = 0;
+                pixels[l + 1] = g;
+                pixels[l + 2] = 0;
+                pixels[l + 3] = 255;
+            }                
+        }
+    }
+    image.create(window.getSize().x, window.getSize().y, pixels);
+    texture.loadFromImage(image);
+    sprite.setTexture(texture, false);
+    return sprite;
+}*/
+
 int main()
 {
     int WindowsX = 1000;
@@ -72,6 +117,7 @@ int main()
                         Game game;
                         int score;
                         InitGame(game, { window.getSize().x * 0.5f,window.getSize().y * 0.5f }, (sf::Vector2f)window.getSize());
+                        //sf::Sprite background = Fractale( 100, window);
                         ///FOREGROUND CATHODIC TV
                         sf::Texture bgtext;
                         bgtext.loadFromFile("Sprites/Effects.png");
@@ -84,11 +130,13 @@ int main()
                                 // Process any input event here
 
                                 if (event.type == sf::Event::Closed) {
+                                    std::cout << "score : " << game.score << std::endl;
                                     window.close();
                                 }
                                 if (event.type == sf::Event::KeyPressed) {
                                     if (event.key.code == sf::Keyboard::Escape) {
                                         window.close();
+                                        std::cout <<"score : "<< game.score << std::endl;
                                         MENU.display();
                                     }
                                     if (event.key.code == sf::Keyboard::Space) {
@@ -104,7 +152,7 @@ int main()
                             Options.close();
                             GameUpdate(game, deltaTime);
                             window.clear();
-
+                            //window.draw(background);
                             window.draw(bg);
                             GameDraw(game, window);
 

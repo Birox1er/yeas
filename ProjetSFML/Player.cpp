@@ -150,7 +150,7 @@ void UpdatePlayer(Player& player, float deltaTime,sf::Vector2f size)
     UpdateProjectile(player.projManager, deltaTime,size, player);
 }
 
-void PlayerDraw(Player& player, sf::RenderWindow& window)
+void PlayerDraw(Player& player, sf::RenderWindow& window,float score)
 {
     DrawTrail(player.trail, window);
     if (player.life > 0) {
@@ -203,6 +203,7 @@ void PlayerDraw(Player& player, sf::RenderWindow& window)
         }
     }
     else {
+        std::cout << "score : " << (int)score*10 << std::endl;
         window.close();
     }
     

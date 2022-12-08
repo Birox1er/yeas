@@ -2,13 +2,14 @@
 
 void InitGame(Game& game, sf::Vector2f position, sf::Vector2f size)
 {
+	game.score = 0;
 	game.position = position;
 	game.size = size;
 	game.shape.setPosition(position);
 	game.shape.setSize(size);
 	game.shape.setOrigin(size / 2.f);
 	InitPlayer(game.player, position);
-	game.enemies = CreateEnemyManager(10.0f,game.position,10.0f);
+	game.enemies = CreateEnemyManager(5.0f,game.position,10.0f);
 
 }
 void CheckOutsides(Game& game, Player& player) {
@@ -29,18 +30,20 @@ void CheckOutsides(Game& game, Player& player) {
 }
 void GameDraw(Game& game, sf::RenderWindow& window)
 {
-	PlayerDraw(game.player, window);
+	PlayerDraw(game.player, window,game.score);
 	EnemyDraw(game.enemies, window);
 }
 void GameUpdate(Game& game, float deltaTime)
 {
+	game.score += deltaTime;
 	UpdatePlayer(game.player, deltaTime, game.size);
-	UpdateEnemy(game.enemies, deltaTime,game.size,game.player);
+	UpdateEnemy(game.enemies, deltaTime,game.size,game.player,game.score);
 	CheckOutsides(game, game.player);
 }
 
 void PressedSpace(Game& game, float deltaTime)
 {
+	
 	PlayerPressedSpace(game.player, deltaTime);
 }
 void PressedE(Game& game) {

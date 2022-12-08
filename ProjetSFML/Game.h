@@ -4,6 +4,7 @@
 
 struct Game
 {
+	float score;
 	sf::Vector2f position;
 	sf::Vector2f size;
 	sf::RectangleShape shape;
