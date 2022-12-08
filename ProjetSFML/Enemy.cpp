@@ -15,8 +15,7 @@ void GenerateEnemyAndCreate(EnemyManager& enemyManager, int windoSizeX, int wind
     int seed = rand()% 100;
     std::cout << seed << std::endl;
     sf::Vector2f pos;
-    pos.x = (rand() % (windoSizeX-200))+100;
-    pos.y = (rand() % (windoSizeY-200))+100;
+
     int baseSpeed = 500;
     int speed;
     int life;
@@ -51,6 +50,14 @@ void GenerateEnemyAndCreate(EnemyManager& enemyManager, int windoSizeX, int wind
 
     speed = baseSpeed / life;
     size = life;
+
+    retry:
+    pos.x = (rand() % (windoSizeX - 200)) + 100;
+    pos.y = (rand() % (windoSizeY - 200)) + 100;
+    sf::Vector2f distance4 = pos - player.hitboxFront.getPosition();
+    if (Norm(distance4) <= (size *10) + player.hitboxFront.getRadius() + 50) {
+        goto retry;
+    }
     Enemy en = CreateEnemy(speed, life, pos, size, player);
     enemyManager.enemies.push_back(en);
 }

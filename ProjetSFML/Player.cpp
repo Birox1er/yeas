@@ -41,7 +41,7 @@ void PlayerPressedSpace(Player& player, float deltaTime)
     std::cout << player.projManager.chrono << std::endl;
     RecalculateAngles(player);
     if (player.projManager.chrono > player.projManager.timeBtw) {
-        AddProjectileToGame(player.projManager, player.dir, 500, 5,1);
+        AddProjectileToGame(player.projManager, player.dir, 400, 5,1);
     }
 }
 void PlayerPressedE(Player& player) {
