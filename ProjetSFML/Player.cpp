@@ -65,6 +65,7 @@ void UpdatePlayer(Player& player, float deltaTime,sf::Vector2f size, bool cansho
     else {
         player.sprite.setColor(sf::Color::White);
     }
+
     RecalculateAngles(player);
     UpdateTrail(player.trail, player.speed, player.sprite.getPosition() - player.dir * 3.0f, player.isSheidOn,deltaTime);
     player.projManager.position = player.sprite.getPosition() + player.dir*5.0f;
