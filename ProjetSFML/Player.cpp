@@ -22,7 +22,7 @@ void InitPlayer(Player& player, sf::Vector2f position)
     player.spritesheild.setPosition(player.sprite.getPosition().x, player.sprite.getPosition().y + 10);
 
     RecalculateAngles(player);
-    player.projManager = CreateProjectileManager(0, 0, player.sprite.getPosition() + player.dir*5.0f);
+    player.projManager = CreateProjectileManager(0.5f, 0.5f, player.sprite.getPosition() + player.dir*5.0f);
     
     
     player.hitboxFront = sf::CircleShape(25);
@@ -125,7 +125,7 @@ void UpdatePlayer(Player& player, float deltaTime,sf::Vector2f size)
     while (it != player.projManager.projectiles.end()) {
         sf::Vector2f distance = player.hitboxFront.getPosition() - (*it).shape.getPosition();
         if (Norm(distance) <= player.hitboxFront.getRadius() + (*it).shape.getRadius() && (*it).IsEnemy && (*it).canHit) {
-            //player.life -= 1;
+            player.life -= 1;
             it = player.projManager.projectiles.erase(it);
             std::cout << player.life << std::endl;
         }
@@ -222,9 +222,7 @@ void PlayerDraw(Player& player, sf::RenderWindow& window,float score)
 #pragma endregion
     }
     else {
-        if (player.isSheidOn) {
-            score *= 1.5f;
-        }
+        
         std::cout << "score : " << (int)score*10 << std::endl;
         window.close();
     }

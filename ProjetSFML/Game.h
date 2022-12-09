@@ -4,6 +4,7 @@
 
 struct Game
 {
+	float multiplier;
 	float score;
 	sf::Vector2f position;
 	sf::Vector2f size;

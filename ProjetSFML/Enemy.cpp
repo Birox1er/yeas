@@ -77,7 +77,7 @@ Enemy CreateEnemy(int speed, int life, sf::Vector2f origine,int size, Player& pl
 
     return enemy;
 }
-void UpdateEnemy(EnemyManager& enemies, float deltaTime, sf::Vector2f size, Player& player, float& score) {
+void UpdateEnemy(EnemyManager& enemies, float deltaTime, sf::Vector2f size, Player& player, float& score,float multiplier) {
     
     if (enemies.chrono >= enemies.timeBtw) {
         enemies.chrono = 0;
@@ -127,7 +127,7 @@ void UpdateEnemy(EnemyManager& enemies, float deltaTime, sf::Vector2f size, Play
                 enemies.system.chrono2 = 0;
                 enemies.system.origine = (*it).enemyShape.getPosition();
                 it = enemies.enemies.erase(it);
-                score += 10;
+                score += 10*multiplier;
             }
             if (it != enemies.enemies.end()) {
                 it++;

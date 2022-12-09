@@ -2,6 +2,7 @@
 
 void InitGame(Game& game, sf::Vector2f position, sf::Vector2f size)
 {
+	game.multiplier = 1;
 	game.score = 0;
 	game.position = position;
 	game.size = size;
@@ -35,9 +36,15 @@ void GameDraw(Game& game, sf::RenderWindow& window)
 }
 void GameUpdate(Game& game, float deltaTime)
 {
-	game.score += deltaTime;
+	if (game.player.isSheidOn) {
+		game.multiplier = 1.5f;
+	}
+	else {
+		game.multiplier = 1;
+	}
+	game.score += (deltaTime*game.multiplier);
 	UpdatePlayer(game.player, deltaTime, game.size);
-	UpdateEnemy(game.enemies, deltaTime,game.size,game.player,game.score);
+	UpdateEnemy(game.enemies, deltaTime,game.size,game.player,game.score,game.multiplier);
 	CheckOutsides(game, game.player);
 }
 
