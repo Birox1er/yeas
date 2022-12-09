@@ -140,6 +140,7 @@ void UpdatePlayer(Player& player, float deltaTime,sf::Vector2f size, bool cansho
         sf::Vector2f distance = player.hitboxFront.getPosition() - (*it).shape.getPosition();
         if (Norm(distance) <= player.hitboxFront.getRadius() + (*it).shape.getRadius() && (*it).IsEnemy && (*it).canHit) {
             player.life -= 1;
+            player.canSheildBeOn = true;
             it = player.projManager.projectiles.erase(it);
             std::cout << player.life << std::endl;
         }
