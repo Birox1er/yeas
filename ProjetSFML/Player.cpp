@@ -2,6 +2,7 @@
 
 void InitPlayer(Player& player, sf::Vector2f position)
 {
+    player.trail.chrono = 0;
     player.texture.loadFromFile("Sprites/Player.png");
     if (!player.texture.loadFromFile("Sprites/Player.png")) {
         std::cout << "failed to load Texture" << std::endl;
@@ -52,7 +53,7 @@ void PlayerPressedE(Player& player) {
 void UpdatePlayer(Player& player, float deltaTime,sf::Vector2f size)
 {
     RecalculateAngles(player);
-    UpdateTrail(player.trail, player.speed, player.sprite.getPosition() - player.dir * 3.0f, player.isSheidOn);
+    UpdateTrail(player.trail, player.speed, player.sprite.getPosition() - player.dir * 3.0f, player.isSheidOn,deltaTime);
     player.projManager.position = player.sprite.getPosition() + player.dir*5.0f;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A) || sf::Keyboard::isKeyPressed(sf::Keyboard::Q)) {
         //printf("Rotate Right \n");
@@ -203,6 +204,9 @@ void PlayerDraw(Player& player, sf::RenderWindow& window,float score)
         }
     }
     else {
+        if (player.isSheidOn) {
+            score *= 1.5f;
+        }
         std::cout << "score : " << (int)score*10 << std::endl;
         window.close();
     }

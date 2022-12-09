@@ -8,10 +8,14 @@ void AddShapeToTrail(TrailManager& trail, sf::Vector2f position)
 	trail.trailPoints.push_front(circle);
 }
 
-void UpdateTrail(TrailManager& trail, float speed, sf::Vector2f position, bool oui)
+void UpdateTrail(TrailManager& trail, float speed, sf::Vector2f position, bool oui,float deltaTime)
 {
+	trail.chrono += deltaTime;
 	trail.length = (int)speed;
-	AddShapeToTrail(trail, position);
+	if (trail.chrono > 0.005f) {
+		AddShapeToTrail(trail, position);
+		trail.chrono = 0;
+	}
 	std::list<sf::CircleShape>::iterator it = trail.trailPoints.begin();
 	int i = 0;
 	sf::Color col = sf::Color::Color(0,0,0,255);
