@@ -114,6 +114,8 @@ int main()
                     if (x == 0) {
                         sf::Clock mainClock;
                         float deltaTime;
+                        float alldt = 0;
+                        float sindt = 0;
                         Game game;
                         int score;
                         InitGame(game, { window.getSize().x * 0.5f,window.getSize().y * 0.5f }, (sf::Vector2f)window.getSize());
@@ -129,6 +131,8 @@ int main()
                                 //std::cout << "Can presse space \n";
                             }
                             deltaTime = mainClock.restart().asSeconds();
+                            alldt += deltaTime;
+                            sindt = ((sin(alldt) + 1.5) * deltaTime) * .4f;
                             while (window.pollEvent(event)) {
                                 if (event.type == sf::Event::Closed) {
                                     std::cout << "score : " << game.score << std::endl;
