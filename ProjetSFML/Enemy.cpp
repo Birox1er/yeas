@@ -106,7 +106,7 @@ void UpdateEnemy(EnemyManager& enemies, float deltaTime, sf::Vector2f size, Play
                 if (Norm(distance) <= (*it).enemyShape.getRadius() + (*it2).shape.getRadius() && (*it2).IsEnemy == false && (*it2).canHit == true) {
                         (*it).life -= 1;
                         (*it2).direction = (*it2).direction - distance;
-                        (*it2).IsEnemy = true;
+                        //(*it2).IsEnemy = true;
                 }
                 it2++;
             }

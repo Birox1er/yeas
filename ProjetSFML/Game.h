@@ -11,7 +11,10 @@ struct Game
 	sf::RectangleShape shape;
 	Player player;
 	EnemyManager enemies; 
-
+	bool hasPressedSpace = false;
+	bool canPressDSpace = false;
+	float cd = .4f;
+	float reuseCD = 3.0f;
 };
 
 void InitGame(Game& game, sf::Vector2f position, sf::Vector2f size);

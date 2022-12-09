@@ -39,19 +39,32 @@ void RecalculateAngles(Player& player)
 
 void PlayerPressedSpace(Player& player, float deltaTime)
 {
+    
     std::cout << player.projManager.chrono << std::endl;
     RecalculateAngles(player);
     if (player.projManager.chrono > player.projManager.timeBtw) {
         AddProjectileToGame(player.projManager, player.dir, 400, 5,1);
     }
 }
+
+void PlayerPressedDoubleSpace(Player& player, float deltaTime) {
+
+    player.hasToShoot = true;
+}
+
 void PlayerPressedE(Player& player) {
     player.returntome = true;
     player.MaxSpeed = 25;
 }
 
-void UpdatePlayer(Player& player, float deltaTime,sf::Vector2f size)
+void UpdatePlayer(Player& player, float deltaTime,sf::Vector2f size, bool canshoot)
 {
+    if (canshoot) {
+        player.sprite.setColor(sf::Color::Color(100, 0, 255, 255));
+    }
+    else {
+        player.sprite.setColor(sf::Color::White);
+    }
     RecalculateAngles(player);
     UpdateTrail(player.trail, player.speed, player.sprite.getPosition() - player.dir * 3.0f, player.isSheidOn,deltaTime);
     player.projManager.position = player.sprite.getPosition() + player.dir*5.0f;
@@ -61,13 +74,13 @@ void UpdatePlayer(Player& player, float deltaTime,sf::Vector2f size)
         player.hitboxFront.setRotation(player.sprite.getRotation());
 
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D) || sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
         //printf("Rotate left \n");
         player.sprite.setRotation(player.sprite.getRotation() + player.rotateSpeed * deltaTime);
         player.hitboxFront.setRotation(player.sprite.getRotation());
 
     }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z)) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Z) || sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
         //printf("Move Forward \n");
         player.wasS = false;
         player.wasZ = true;
@@ -150,6 +163,16 @@ void UpdatePlayer(Player& player, float deltaTime,sf::Vector2f size)
     case(1):
         player.texture.loadFromFile("Sprites/Player_5.png");
         break;
+    }
+    if (player.cd <= 0) {
+        player.hasToShoot = false;
+        player.cd = .1f;
+        return;
+    }
+    if (player.hasToShoot) {
+       AddProjectileToGame(player.projManager, player.dir, 400, 5, 1);
+       player.cd -= deltaTime;
+       std::cout << player.cd << "\n";
     }
 
     player.spritesheild.setRotation(player.sprite.getRotation());

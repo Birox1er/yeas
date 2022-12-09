@@ -36,6 +36,20 @@ void GameDraw(Game& game, sf::RenderWindow& window)
 }
 void GameUpdate(Game& game, float deltaTime)
 {
+	if (game.hasPressedSpace) {
+		game.cd -= deltaTime;
+		if (game.cd <= 0) {
+			game.hasPressedSpace = false;
+			game.cd = .4f;
+		}
+	}
+	if (!game.canPressDSpace) {
+		game.reuseCD -= deltaTime;
+		if (game.reuseCD <= 0) {
+			game.reuseCD = 2.0f;
+			game.canPressDSpace = true;
+		}
+	}
 	if (game.player.isSheidOn) {
 		game.multiplier = 1.5f;
 	}
@@ -43,15 +57,23 @@ void GameUpdate(Game& game, float deltaTime)
 		game.multiplier = 1;
 	}
 	game.score += (deltaTime*game.multiplier);
-	UpdatePlayer(game.player, deltaTime, game.size);
+	UpdatePlayer(game.player, deltaTime, game.size, game.canPressDSpace);
 	UpdateEnemy(game.enemies, deltaTime,game.size,game.player,game.score,game.multiplier);
 	CheckOutsides(game, game.player);
 }
 
 void PressedSpace(Game& game, float deltaTime)
 {
-	
-	PlayerPressedSpace(game.player, deltaTime);
+	if (game.hasPressedSpace && game.canPressDSpace) {
+		PlayerPressedDoubleSpace(game.player, deltaTime);
+		game.hasPressedSpace = false;
+		game.canPressDSpace = false;
+		game.cd = .4f;
+	}
+	else {
+		game.hasPressedSpace = true;
+		PlayerPressedSpace(game.player, deltaTime);
+	}
 }
 void PressedE(Game& game) {
 	PlayerPressedE(game.player);

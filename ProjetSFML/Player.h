@@ -36,11 +36,15 @@ struct Player
 
 	bool returntome = false;
 
+	bool hasToShoot = false;
+	float cd = .1f;
+
 };
 
 void InitPlayer(Player& player, sf::Vector2f position);
 void RecalculateAngles(Player& player);
-void UpdatePlayer(Player& player, float deltaTime,sf::Vector2f size);
+void UpdatePlayer(Player& player, float deltaTime,sf::Vector2f size, bool canshoot);
 void PlayerDraw(Player& player, sf::RenderWindow& window,float score);
 void PlayerPressedSpace(Player& player, float deltaTime);
+void PlayerPressedDoubleSpace(Player& player, float deltaTime);
 void PlayerPressedE(Player& player);

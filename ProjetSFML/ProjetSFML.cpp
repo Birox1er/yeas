@@ -117,18 +117,19 @@ int main()
                         Game game;
                         int score;
                         InitGame(game, { window.getSize().x * 0.5f,window.getSize().y * 0.5f }, (sf::Vector2f)window.getSize());
-                        //sf::Sprite background = Fractale( 100, window);
-                        ///FOREGROUND CATHODIC TV
+
                         sf::Texture bgtext;
                         bgtext.loadFromFile("Sprites/Effects.png");
                         sf::Sprite bg;
                         bg.setTexture(bgtext);
+
                         while (window.isOpen()) {
                             sf::Event event;
+                            if (game.hasPressedSpace) {
+                                //std::cout << "Can presse space \n";
+                            }
                             deltaTime = mainClock.restart().asSeconds();
                             while (window.pollEvent(event)) {
-                                // Process any input event here
-
                                 if (event.type == sf::Event::Closed) {
                                     std::cout << "score : " << game.score << std::endl;
                                     window.close();
@@ -140,7 +141,6 @@ int main()
                                         MENU.display();
                                     }
                                     if (event.key.code == sf::Keyboard::Space) {
-                                        //std::cout << "ayayo";
                                         PressedSpace(game, deltaTime);
                                     }
                                     if (event.key.code == sf::Keyboard::E) {
