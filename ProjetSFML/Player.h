@@ -21,7 +21,7 @@ struct Player
 	ProjectileManager projManager;
 	TrailManager trail;
 
-	int life = 3;
+	int life = 5;
 	int rotateSpeed = 150;
 	float speed = 0;
 	float AccSpeed = 15;

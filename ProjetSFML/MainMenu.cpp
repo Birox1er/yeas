@@ -2,7 +2,7 @@
 
 MainMenu::MainMenu(float width, float height) 
 {
-	if (!font.loadFromFile("Fonts/Earth-Orbiter-Deep-3D/earthorbiter.ttf")) {
+	if (!font.loadFromFile("Fonts/dominique/Dominique-win.ttf")) {
 		std::cout << "No font avalaible";
 	}
 

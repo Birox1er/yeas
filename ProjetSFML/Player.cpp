@@ -134,16 +134,23 @@ void UpdatePlayer(Player& player, float deltaTime,sf::Vector2f size)
     }
     switch (player.life)
     {
-    case(3):
+    case(5):
         player.texture.loadFromFile("Sprites/Player.png");
         break;
-    case(2):
+    case(4):
         player.texture.loadFromFile("Sprites/Player_2.png");
         break;
-    case(1):     
+    case(3):     
         player.texture.loadFromFile("Sprites/Player_3.png");
         break;
+    case(2):
+        player.texture.loadFromFile("Sprites/Player_4.png");
+        break;
+    case(1):
+        player.texture.loadFromFile("Sprites/Player_5.png");
+        break;
     }
+
     player.spritesheild.setRotation(player.sprite.getRotation());
     player.spritesheild.setPosition(player.sprite.getPosition() + player.dir * 3.5f);
     player.hitboxFront.setPosition(player.sprite.getPosition());
@@ -164,17 +171,27 @@ void PlayerDraw(Player& player, sf::RenderWindow& window,float score)
         }
         window.draw(player.sprite);
         DrawProjectile(player.projManager, window);
-        //sf::Font font;
-        //font.loadFromFile("Sprites/Mintage.ttf");
-        //sf::Text lifetxt;
-        //std::string t = player.life.toString();
-        //lifetxt.setString(t);
-        //lifetxt.setFont(font);
-        //lifetxt.setFillColor(sf::Color::Blue);
+        sf::Font font;
+        if (!font.loadFromFile("Fonts/dominique/Dominique-win.ttf")) {
+            std::cout << "failed to load Font" << std::endl;
+        }
+        sf::Text lifetxt;
+        lifetxt.setFont(font);
+        std::string t = "Life : " + std::to_string(player.life);
+        lifetxt.setString(t);
+        lifetxt.setFillColor(sf::Color::Blue);
         //lifetxt.setPosition(window.getSize().x / 2, window.getSize().y / 2);
-        //lifetxt.setCharacterSize(42);
-        //window.draw(lifetxt);
-        
+        lifetxt.setCharacterSize(42);
+        window.draw(lifetxt);
+        sf::Text scoretxt;
+        scoretxt.setFont(font);
+        std::string t2 = "Score : " + std::to_string((int)score);
+        scoretxt.setString(t2);
+        scoretxt.setFillColor(sf::Color::Blue);
+        scoretxt.setPosition(scoretxt.getPosition().x, scoretxt.getPosition().y+50);
+        scoretxt.setCharacterSize(42);
+        window.draw(scoretxt);
+#pragma region TELEPORT
         sf::Vector2f tempPos = player.sprite.getPosition();
         if (player.outWidth && player.sprite.getPosition().x > window.getSize().x * 0.001f) {
             player.sprite.setPosition(tempPos.x - window.getSize().x, tempPos.y);
@@ -201,6 +218,7 @@ void PlayerDraw(Player& player, sf::RenderWindow& window,float score)
             window.draw(player.sprite);
             //window.draw(player.hitboxFront);
         }
+#pragma endregion
     }
     else {
         std::cout << "score : " << (int)score*10 << std::endl;
